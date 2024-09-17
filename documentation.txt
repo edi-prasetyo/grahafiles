@@ -1,0 +1,29 @@
+Seting Database
+* Buat database baru di php myadmin
+* Buka Folder Aplikasi menggunakan text Editor ( Rekomendasi gunakan Visual Studio Code )
+* Edit data .env lalu ubah DB_DATABASE dengan database yang baru di buat
+* Buka Terminal Jalankan perintah "php artisan migrate"
+* Jalankan perintah "php artisan db:seed --class=PermissionTableSeeder"
+* Jalanan perintah "php artisan db:seed --class=CreateAdminUserSeeder"
+* Jalankan perintah "php artisan db:seed --class=CreateWriterSeeder"
+
+Seting Email Verification Jika sudah di hosting
+* Buka file .env kemudian ubah semua pengaturan code seperti di bawah ini lalu sesuaikan dengan pengaturan mail hosting anda
+
+   MAIL_MAILER=smtp
+   MAIL_HOST=sandbox.smtp.mailtrap.io (Host Mail hosting )
+   MAIL_PORT=2525 (Port Mail Hosting)
+   MAIL_USERNAME=0a31e1f5f3722f (email hosting)
+   MAIL_PASSWORD=f8a406abdec806 (Password email)
+   MAIL_ENCRYPTION=null
+   MAIL_FROM_ADDRESS="alamat email"
+   MAIL_FROM_NAME="Nama Website"
+
+
+Access Login Superadmin
+* email : superadmin@demo.com
+* pass  : 12345678
+
+Access Login Writer
+* email : writer@demo.com
+* pass  : 12345678
