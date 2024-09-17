@@ -25,7 +25,7 @@
                     <th>Format</th>
                     <th>Size</th>
                     <th>Download</th>
-                    {{-- <th width="20%">Action</th> --}}
+
                 </tr>
                 @foreach ($files as $file)
                     <tr>
@@ -51,9 +51,7 @@
                             {{ $bytes }}
                         </td>
                         <td>{{ $file->download_count }}</td>
-                        {{-- <td>
-                            <a class="btn btn-info btn-sm" href="{{ url('file', $file->slug) }}">View</a>
-                        </td> --}}
+
                     </tr>
                 @endforeach
             </table>
