@@ -20,7 +20,7 @@ use App\Http\Controllers\TagController;
 // Route::get('/', function () {
 
 // });
-Auth::routes(['verify' => true]);
+Auth::routes(['verify' => true, 'register' => false]);
 Route::get('/', [FrontController::class, 'index']);
 Route::get('/email/verify', function () {
     return view('auth.verify-email');
@@ -36,7 +36,7 @@ Route::get('/page/{slug}', [FrontController::class, 'page']);
 Route::get('file/download/{uuid}', [FrontController::class, 'download']);
 Route::get('file/download-file/{uuid}', [FrontController::class, 'download_process']);
 
-Auth::routes();
+// Auth::routes();
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
 Route::post('/update-profile', [HomeController::class, 'update_profile'])->name('update-profile');
