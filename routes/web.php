@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\FileTypeController;
 use App\Http\Controllers\FrontController;
 use Illuminate\Support\Facades\Route;
@@ -45,6 +46,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('options', [OptionController::class, 'index']);
     Route::post('options/update', [OptionController::class, 'update']);
+
+    Route::get('file-manager', [FileController::class, 'index']);
 
     Route::get('roles', [RoleController::class, 'index']);
     Route::get('roles/create', [RoleController::class, 'create']);

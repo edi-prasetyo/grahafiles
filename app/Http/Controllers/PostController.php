@@ -117,9 +117,6 @@ class PostController extends Controller
             $uploadfile->save();
         }
 
-
-
-
         Alert::success('Post', 'Artikel Berhasil di Posting');
         return redirect('posts');
     }

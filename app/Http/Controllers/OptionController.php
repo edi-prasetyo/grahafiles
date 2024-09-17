@@ -53,31 +53,22 @@ class OptionController extends Controller
 
         if ($request->hasFile('logo')) {
 
-            $path = 'uploads/avatar/' . $option->logo;
+            $path = 'uploads/logo/' . $option->logo;
             if (File::exists($path)) {
                 File::delete($path);
             }
 
-            // $manager = new ImageManager(new Driver());
-            // $name_gen = hexdec(uniqid()) . '.' . $request->file('logo')->getClientOriginalExtension();
-            // $img = $manager->read($request->file('logo'));
-            // $img = $img->scale(200);
-            // $img->toPng()->save(base_path('public/uploads/avatar/' . $name_gen));
-            // $save_url = $name_gen;
-            // $option->logo = $save_url;
-            // $option->logo_url = URL::to('/uploads/avatar/' . $name_gen);
-
             $file = $request->file('logo');
             $ext = $file->getClientOriginalExtension();
             $filename = time() . '.' . $ext;
-            $file->move('uploads/avatar/', $filename);
+            $file->move('uploads/logo/', $filename);
 
             $option->logo = $filename;
-            $option->logo_url = URL::to('/uploads/avatar/' . $filename);
+            $option->logo_url = URL::to('/uploads/logo/' . $filename);
         }
         if ($request->hasFile('second_logo')) {
 
-            $path = 'uploads/avatar/' . $option->second_logo;
+            $path = 'uploads/logo/' . $option->second_logo;
             if (File::exists($path)) {
                 File::delete($path);
             }
@@ -85,15 +76,14 @@ class OptionController extends Controller
             $file = $request->file('second_logo');
             $ext = $file->getClientOriginalExtension();
             $filename = time() . '.' . $ext;
-            $file->move('uploads/avatar/', $filename);
+            $file->move('uploads/logo/', $filename);
 
             $option->second_logo = $filename;
-            $option->second_logo_url = URL::to('/uploads/avatar/' . $filename);
+            $option->second_logo_url = URL::to('/uploads/logo/' . $filename);
         }
-
         if ($request->hasFile('favicon')) {
 
-            $path = 'uploads/avatar/' . $option->favicon;
+            $path = 'uploads/logo/' . $option->favicon;
             if (File::exists($path)) {
                 File::delete($path);
             }
@@ -101,13 +91,11 @@ class OptionController extends Controller
             $file = $request->file('favicon');
             $ext = $file->getClientOriginalExtension();
             $filename = time() . '.' . $ext;
-            $file->move('uploads/avatar/', $filename);
+            $file->move('uploads/logo/', $filename);
 
             $option->favicon = $filename;
-            $option->favicon_url = URL::to('/uploads/avatar/' . $filename);
+            $option->favicon_url = URL::to('/uploads/logo/' . $filename);
         }
-
-
         $option->update();
         Alert::success('Pengaturan Web', 'Pengaturan Web Berhasil diupdate');
         return redirect()->back();

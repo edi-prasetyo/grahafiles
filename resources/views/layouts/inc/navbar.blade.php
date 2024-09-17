@@ -131,6 +131,8 @@
                             class="ti ti-category text-secondary"></i> Banner</a>
                 @endrole
                 @role('superadmin|admin|writer|demo')
+                    <a class="nav-link link-body-emphasis text-decoration-none" href="{{ url('file-manager') }}"><i
+                            class="ti ti-news text-secondary"></i> File Manager</a>
                     <a class="nav-link link-body-emphasis text-decoration-none" href="{{ url('posts') }}"><i
                             class="ti ti-news text-secondary"></i> Post</a>
                     <a class="nav-link link-body-emphasis text-decoration-none" href="{{ url('profile') }}"> <i
