@@ -38,11 +38,11 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    protected function authenticated()
-    {
-        if (Auth::user()->status !== 1) {
-            Auth::logout();
-            return redirect('/login')->withError('Akun Anda telah di nonaktifkan!');
-        }
-    }
+    // protected function authenticated()
+    // {
+    //     if (Auth::user()->status !== 1) {
+    //         Auth::logout();
+    //         return redirect('/login')->withError('Akun Anda telah di nonaktifkan!');
+    //     }
+    // }
 }
