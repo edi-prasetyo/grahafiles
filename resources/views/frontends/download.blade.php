@@ -4,6 +4,7 @@
         <div class="col-md-10 mx-auto">
             <div class="align-items-center vh-50 text-center">
                 <h1 class="mt-5 mb-5">{{ $post->title }}</h1>
+
                 <div id="countdown">You have to wait 15 seconds.</div>
                 <b class="mb-3">Generating Download Link...</b><br />
                 @if ($files->file_url == null)
@@ -18,6 +19,8 @@
                     $files->file_url;
                     $download_url = url('file/download-file/' . $files->uuid);
                 @endphp
+
+                {{-- {{ $files->file_url }} --}}
 
                 <div class="col-md-8 mx-auto mt-3">
                     <div class="row">
@@ -50,7 +53,7 @@
     <script>
         const downloadButton = document.getElementById("download_link");
         const countdown = document.getElementById("countdown");
-        const downloadLink = {!! json_encode($download_url) !!};
+        const downloadLink = {!! json_encode($files->file_url) !!};
 
         let timer;
         let countdownValue = 20;

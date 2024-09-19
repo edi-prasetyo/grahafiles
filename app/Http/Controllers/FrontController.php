@@ -147,7 +147,7 @@ class FrontController extends Controller
         // $pathToFile = url('uploads/files/' . $file->file);
 
         $path = 'uploads/files/';
-        $pathToFile = public_path($path . $file->file);
+        $pathToFile = url($path . $file->file);
 
 
         if (!Auth::check()) { //guest user identified by ip
