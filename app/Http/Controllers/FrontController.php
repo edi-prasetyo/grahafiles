@@ -144,7 +144,10 @@ class FrontController extends Controller
     public function download_process($uuid)
     {
         $file = ModelsFile::where('uuid', $uuid)->first();
-        $pathToFile = url('uploads/files/' . $file->file);
+        // $pathToFile = url('uploads/files/' . $file->file);
+
+        $path = 'uploads/files/';
+        $pathToFile = public_path($path . $file->file);
 
 
         if (!Auth::check()) { //guest user identified by ip
