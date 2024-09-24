@@ -65,8 +65,8 @@
                                                     class="bi bi-box-arrow-up-right"></i>
                                                 Detail</a>
                                             @foreach ($item->files as $file)
-                                                <a href="{{ url('file/download/' . $file->uuid) }}"
-                                                    class="btn btn-primary"><i class="bi bi-download"></i>
+                                                <a href="{{ url('download/' . $file->uuid) }}" class="btn btn-primary"><i
+                                                        class="bi bi-download"></i>
                                                     Download</a>
                                             @endforeach
                                         </div>

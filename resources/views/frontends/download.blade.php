@@ -17,8 +17,35 @@
                 <h3 id="countdown"></h3>
                 @php
                     $files->file_url;
-                    $download_url = url('file/download-file/' . $files->uuid);
+                    // $download_url = url('file/download-file/' . $files->uuid);
+                    $file_path = url('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9/' . $files->file);
                 @endphp
+
+                @php
+                    $bytes = $files->size;
+                    if ($bytes >= 1073741824) {
+                        $bytes = number_format($bytes / 1073741824, 2) . ' GB';
+                    } elseif ($bytes >= 1048576) {
+                        $bytes = number_format($bytes / 1048576, 2) . ' MB';
+                    } elseif ($bytes >= 1024) {
+                        $bytes = number_format($bytes / 1024, 2) . ' KB';
+                    } elseif ($bytes > 1) {
+                        $bytes = $bytes . ' bytes';
+                    } elseif ($bytes == 1) {
+                        $bytes = $bytes . ' byte';
+                    } else {
+                        $bytes = '0 bytes';
+                    }
+                @endphp
+
+                <p>Download {{ $post->title }} Untuk kebutuhan Advertising, Silahkan download file ini dan gunakan sesuai
+                    kebutuhan. File {{ $post->title }} dengan format {{ $files->ext }} dengan ukuran file
+                    {{ $bytes }} .
+
+                    kami tidak memberikan jaminan apa pun tentang kelengkapan, keandalan, dan keakuratan informasi ini.
+                    Untuk informasi selengkapnya harap baca disclaimer yang ada di situs ini dengan mengklik halaman <a
+                        href={{ url('page/disclaimer') }}>ini</a>
+                </p>
 
                 {{-- {{ $files->file_url }} --}}
 
@@ -53,7 +80,7 @@
     <script>
         const downloadButton = document.getElementById("download_link");
         const countdown = document.getElementById("countdown");
-        const downloadLink = {!! json_encode($files->file_url) !!};
+        const downloadLink = {!! json_encode($file_path) !!};
 
         let timer;
         let countdownValue = 20;

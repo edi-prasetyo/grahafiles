@@ -33,8 +33,9 @@ Route::get('/search', [FrontController::class, 'search']);
 Route::get('/category/{category_slug}', [FrontController::class, 'category']);
 Route::get('/tag/{tag_slug}', [FrontController::class, 'tag']);
 Route::get('/page/{slug}', [FrontController::class, 'page']);
-Route::get('file/download/{uuid}', [FrontController::class, 'download']);
-Route::get('file/download-file/{uuid}', [FrontController::class, 'download_process']);
+Route::get('download/{uuid}', [FrontController::class, 'download']);
+Route::post('download/count', [FrontController::class, 'count']);
+Route::get('download-file/{uuid}', [FrontController::class, 'download_process']);
 
 // Auth::routes();
 Route::get('/home', [HomeController::class, 'index'])->name('home');

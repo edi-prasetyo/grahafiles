@@ -61,9 +61,8 @@
                                     </li>
                                     <li class="list-group-item">
                                         <div class="d-grid gap-2">
-                                            <a href="{{ url('file/download/' . $file->uuid) }}" rel="dofollow"
-                                                target="blank" class="btn btn-success"><i
-                                                    class="bi bi-cloud-arrow-down"></i>
+                                            <a href="{{ url('download/' . $file->uuid) }}" rel="dofollow" target="blank"
+                                                class="btn btn-success"><i class="bi bi-cloud-arrow-down"></i>
                                                 Download</a>
                                         </div>
                                     </li>
@@ -81,10 +80,7 @@
                                         target="_blank" class="btn btn-sm btn-dark rounded-3 btnShare">
                                         <i class="bi bi-twitter"></i> <span class="txt-share"> Twitter</span>
                                     </a>
-                                    <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ url('file', $post->slug) }}&title={!! Str::words($post->title, 20) !!}"
-                                        class="btn btn-sm btn-info rounded-3 btnShare">
-                                        <i class="bi bi-linkedin"></i> <span class="txt-share">Linkedin</span>
-                                    </a>
+
                                     <a href="https://wa.me/?text={!! $post->content !!}%20{{ url('file', $post->slug) }}"
                                         target="_blank" class="btn btn-sm btn-success rounded-3 btnShare">
                                         <i class="bi bi-whatsapp"></i> <span class="txt-share">Whatsapp</span>
@@ -174,7 +170,7 @@
                                                         class="bi bi-box-arrow-up-right"></i>
                                                     Detail</a>
                                                 @foreach ($post->files as $file)
-                                                    <a href="{{ url('file/download/' . $file->uuid) }}"
+                                                    <a href="{{ url('download/' . $file->uuid) }}"
                                                         class="btn btn-primary"><i class="bi bi-download"></i>
                                                         Download</a>
                                                 @endforeach

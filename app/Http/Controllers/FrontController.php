@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\CounterDownload;
+use App\Models\CounterPost;
 use App\Models\File as ModelsFile;
 use App\Models\Page;
 use App\Models\Post;
@@ -13,6 +15,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Request as FacadesRequest;
 
 class FrontController extends Controller
 {
@@ -111,6 +114,12 @@ class FrontController extends Controller
             $cookie = cookie($cookie_name, '1', 60); //set the cookie
             $post->incrementReadCount(); //count the view
 
+            $counter = new CounterPost();
+            $counter->post_id = $post->id;
+            $counter->ip_address = request()->ip();
+            $counter->user_agent = request()->userAgent();
+            $counter->save();
+
             return response()
                 ->view('frontends.show', [
                     'post' => $post,
@@ -134,37 +143,76 @@ class FrontController extends Controller
     {
         $files = ModelsFile::where('uuid', $uuid)->first();
         $post = Post::where('id', $files->post_id)->first();
-        // return $post;
-        return view('frontends.download', compact('files', 'post'));
-        // $hash = encrypt([
-        //     'valid_to' => strtotime('+30 minutes'),
-        //     'file_path' => '/home2/alihoss1/domains/alihossein.ir/public_html/dl/video/MySql/Sql1.mp4'
-        // ]);
+
+
+        if (!Auth::check()) { //guest user identified by ip
+            $cookie_name = (Str::replace('.', '', (request()->ip())) . '-' . $files->id);
+        } else {
+            $cookie_name = (Auth::user()->id . '-' . $files->id); //logged in user
+        }
+        if (Cookie::get($cookie_name) == '') { //check if cookie is set
+            $cookie = cookie($cookie_name, '1', 60); //set the cookie
+            // $post->incrementReadCount(); //count the view
+
+            $counter = new CounterDownload();
+            $counter->file_id = $files->id;
+            $counter->ip_address = request()->ip();
+            $counter->user_agent = request()->userAgent();
+            $counter->referer = request()->headers->get('referer');
+            $counter->save();
+
+            return response()
+                ->view('frontends.download', [
+                    'post' => $post,
+                    'files' => $files,
+
+                ])
+                ->withCookie($cookie); //store the cookie
+        } else {
+            return view('frontends.download', compact('files', 'post'));
+        }
     }
     public function download_process($uuid)
     {
         $file = ModelsFile::where('uuid', $uuid)->first();
         // $pathToFile = url('uploads/files/' . $file->file);
 
-        $path = 'uploads/files/';
+        $path = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9/';
         $pathToFile = url($path . $file->file);
 
 
+
+        // CounterDownload::create([
+        //     'ip_address' => $request->ip(),
+        //     'user_agent' => $request->userAgent(),
+        //     // 'uuid' => $uuid,
+        //     // 'url' => Str::before($request->getRequestUri(), '?'),
+        //     // 'ref' => $request->get('ref') ?? $request->get('referrer'),
+        //     // 'utm_medium' => $request->get('utm_medium'),
+        //     // 'utm_source' => $request->get('utm_source'),
+        //     // 'utm_campaign' => $request->get('utm_campaign'),
+        //     // 'referer' => Str::before($request->server('HTTP_REFERER'), '?'),
+        //     // 'data' => $request->all(),
+        // ]);
+
+        // return response()->download($pathToFile);
+
         if (!Auth::check()) { //guest user identified by ip
-            $cookie_name = (Str::replace('.', '', (request()->ip())) . '-' . $file->uuid);
+            $cookie_name = (Str::replace('.', '', (request()->ip())) . '-' . $file->id);
         } else {
-            $cookie_name = (Auth::user()->id . '-' . $file->uuid); //logged in user
+            $cookie_name = (Auth::user()->id . '-' . $file->id); //logged in user
         }
         if (Cookie::get($cookie_name) == '') { //check if cookie is set
             $cookie = cookie($cookie_name, '1', 60); //set the cookie
-            $file->incrementReadCount(); //count the view
+            $file->incrementReadCount();
+
+
 
             return response()->download($pathToFile); //store the cookie
         } else {
             return response()->download($pathToFile);
         }
     }
-
     public function page($slug)
     {
         $page = Page::where('slug', $slug)->first();
