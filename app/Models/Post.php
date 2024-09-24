@@ -41,7 +41,7 @@ class Post extends Model
     }
     public function files()
     {
-        return $this->hasMany(File::class); //don't forget to import
+        return $this->hasMany(File::class);
     }
     public function tag()
     {

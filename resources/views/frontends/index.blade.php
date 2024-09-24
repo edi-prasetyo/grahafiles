@@ -42,7 +42,7 @@
                                             <div class="d-flex justify-content-between align-items-start">
                                                 <div> <i class="bi bi-hdd"></i> {{ $bytes }} </div>
                                                 <div> <i class="bi bi-cloud-download"></i>
-                                                    {{ $file->download_count }} Download </div>
+                                                    {{ count($file->downloadCount) }} Download </div>
                                             </div>
                                         @endforeach
                                     </p>

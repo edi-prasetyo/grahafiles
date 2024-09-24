@@ -22,9 +22,11 @@ class FrontController extends Controller
     public function index()
     {
         $posts = Post::orderBy('id', 'desc')
+            ->with('count')
             ->join('users', 'users.id', '=', 'posts.user_id')
             ->select('posts.*', 'users.name as user_name')
             ->paginate(8);
+        // return $posts;
         $popular = Post::orderBy('views', 'desc')->take(3)->get();
         $recent = Post::orderBy('id', 'desc')->take(3)->get();
         return view('frontends.index', compact('posts', 'popular', 'recent'));
