@@ -57,7 +57,7 @@
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between align-items-start">Total
                                         Download
-                                        <span>{{ $file->download_count }}</span>
+                                        <span>{{ count($file->downloadCount) }}</span>
                                     </li>
                                     <li class="list-group-item">
                                         <div class="d-grid gap-2">

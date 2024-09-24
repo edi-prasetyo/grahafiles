@@ -27,7 +27,6 @@ class FrontController extends Controller
             ->paginate(8);
         $popular = Post::orderBy('views', 'desc')->take(3)->get();
         $recent = Post::orderBy('id', 'desc')->take(3)->get();
-        // return $posts;
         return view('frontends.index', compact('posts', 'popular', 'recent'));
     }
     public function post()
@@ -98,12 +97,12 @@ class FrontController extends Controller
         $recent = Post::orderBy('id', 'desc')->take(3)->get();
 
         $user = User::where('id', $post->user_id)->first();
-        // return $user;
 
-        // return $popular;
-        $files = ModelsFile::where('post_id', $post->id)->get();
+        $files = ModelsFile::where('post_id', $post->id)
+            ->with('downloadCount')
+            ->get();
+
         // return $files;
-
 
         if (!Auth::check()) { //guest user identified by ip
             $cookie_name = (Str::replace('.', '', (request()->ip())) . '-' . $post->id);
@@ -179,23 +178,6 @@ class FrontController extends Controller
 
         $path = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9/';
         $pathToFile = url($path . $file->file);
-
-
-
-        // CounterDownload::create([
-        //     'ip_address' => $request->ip(),
-        //     'user_agent' => $request->userAgent(),
-        //     // 'uuid' => $uuid,
-        //     // 'url' => Str::before($request->getRequestUri(), '?'),
-        //     // 'ref' => $request->get('ref') ?? $request->get('referrer'),
-        //     // 'utm_medium' => $request->get('utm_medium'),
-        //     // 'utm_source' => $request->get('utm_source'),
-        //     // 'utm_campaign' => $request->get('utm_campaign'),
-        //     // 'referer' => Str::before($request->server('HTTP_REFERER'), '?'),
-        //     // 'data' => $request->all(),
-        // ]);
-
-        // return response()->download($pathToFile);
 
         if (!Auth::check()) { //guest user identified by ip
             $cookie_name = (Str::replace('.', '', (request()->ip())) . '-' . $file->id);

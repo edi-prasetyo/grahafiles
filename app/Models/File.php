@@ -14,4 +14,9 @@ class File extends Model
         $this->download_count++;
         return $this->save();
     }
+
+    public function downloadCount()
+    {
+        return $this->hasMany(CounterDownload::class);
+    }
 }

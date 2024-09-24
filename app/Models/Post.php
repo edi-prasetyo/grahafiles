@@ -27,9 +27,17 @@ class Post extends Model
         return $this->save();
     }
 
+    public function counterPost()
+    {
+        return $this->hasOne(CounterPost::class)->latestOfMany();
+    }
+    public function count()
+    {
+        return $this->hasMany(CounterPost::class);
+    }
     public function category()
     {
-        return $this->hasMany(Category::class); //don't forget to import
+        return $this->hasMany(Category::class);
     }
     public function files()
     {
