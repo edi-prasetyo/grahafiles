@@ -33,7 +33,7 @@ class FrontController extends Controller
     }
     public function post()
     {
-        $posts = Post::orderBy('id', 'asc')->with('files')->paginate(8);
+        $posts = Post::orderBy('id', 'desc')->with('files')->paginate(8);
         $popular = Post::orderBy('views', 'desc')->take(3)->get();
         $recent = Post::orderBy('id', 'desc')->take(3)->get();
         // return $posts;
@@ -43,8 +43,8 @@ class FrontController extends Controller
     {
         $keyword = $request['keyword'];
 
-        $posts = Post::where('title', 'like', "%" . $keyword . "%")
-            ->paginate(2);
+        $posts = Post::orderBy('id', 'desc')->where('title', 'like', "%" . $keyword . "%")
+            ->paginate(8);
         $posts->appends(array('keyword' => $keyword));
 
         $popular = Post::orderBy('views', 'desc')->take(3)->get();
@@ -57,7 +57,7 @@ class FrontController extends Controller
     {
         $category = Category::where('slug', $category_slug)->first();
 
-        $posts = Post::where('category_id', $category->id)
+        $posts = Post::orderBy('id', 'desc')->where('category_id', $category->id)
             ->join('users', 'users.id', '=', 'posts.user_id')
             ->select('posts.*', 'users.name as user_name')
             ->paginate(8);
@@ -75,7 +75,7 @@ class FrontController extends Controller
 
         $posts = Post::whereHas('tag', function ($query) use ($tagName) {
             $query->whereName($tagName);
-        })->paginate(8);
+        })->orderBy('id', 'desc')->paginate(8);
 
         $popular = Post::orderBy('views', 'desc')->take(3)->get();
         $recent = Post::orderBy('id', 'desc')->take(3)->get();
@@ -155,12 +155,12 @@ class FrontController extends Controller
             $cookie = cookie($cookie_name, '1', 60); //set the cookie
             // $post->incrementReadCount(); //count the view
 
-            $counter = new CounterDownload();
-            $counter->file_id = $files->id;
-            $counter->ip_address = request()->ip();
-            $counter->user_agent = request()->userAgent();
-            $counter->referer = request()->headers->get('referer');
-            $counter->save();
+            // $counter = new CounterDownload();
+            // $counter->file_id = $files->id;
+            // $counter->ip_address = request()->ip();
+            // $counter->user_agent = request()->userAgent();
+            // $counter->referer = request()->headers->get('referer');
+            // $counter->save();
 
             return response()
                 ->view('frontends.download', [
@@ -175,11 +175,21 @@ class FrontController extends Controller
     }
     public function download_process($uuid)
     {
+
+
+
         $file = ModelsFile::where('uuid', $uuid)->first();
+
+        $counter = new CounterDownload();
+        $counter->file_id = $file->id;
+        $counter->ip_address = request()->ip();
+        $counter->user_agent = request()->userAgent();
+        $counter->referer = request()->headers->get('referer');
+        $counter->save();
         // $pathToFile = url('uploads/files/' . $file->file);
 
-        $path = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9/';
-        $pathToFile = url($path . $file->file);
+        $path = public_path('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9/' . $file->file);
+        // $pathToFile = url($path . $file->file);
 
         if (!Auth::check()) { //guest user identified by ip
             $cookie_name = (Str::replace('.', '', (request()->ip())) . '-' . $file->id);
@@ -192,9 +202,9 @@ class FrontController extends Controller
 
 
 
-            return response()->download($pathToFile); //store the cookie
+            return response()->download($path); //store the cookie
         } else {
-            return response()->download($pathToFile);
+            return response()->download($path);
         }
     }
     public function page($slug)

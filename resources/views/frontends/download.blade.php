@@ -17,8 +17,8 @@
                 <h3 id="countdown"></h3>
                 @php
                     $files->file_url;
-                    // $download_url = url('file/download-file/' . $files->uuid);
-                    $file_path = url('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9/' . $files->file);
+                    $download_url = url('download-file/' . $files->uuid);
+                    // $file_path = url('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9/' . $files->file);
                 @endphp
 
                 @php
@@ -80,7 +80,7 @@
     <script>
         const downloadButton = document.getElementById("download_link");
         const countdown = document.getElementById("countdown");
-        const downloadLink = {!! json_encode($file_path) !!};
+        const downloadLink = {!! json_encode($download_url) !!};
 
         let timer;
         let countdownValue = 20;
