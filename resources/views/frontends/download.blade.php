@@ -5,7 +5,7 @@
             <div class="align-items-center vh-50 text-center">
                 <h1 class="mt-5 mb-5">{{ $post->title }}</h1>
 
-                <div id="countdown">You have to wait 15 seconds.</div>
+                {{-- <div id="countdown">You have to wait 15 seconds.</div>
                 <b class="mb-3">Generating Download Link...</b><br />
                 @if ($files->file_url == null)
                 @else
@@ -13,8 +13,18 @@
                         style="display: none;">
                         <i class="bi bi-cloud-arrow-down"></i> Download File
                     </button>
-                @endif
+                @endif --}}
+
+
+
+
+                <button class="btn btn-success px-5 mt-3" id="downloadButton">
+                    <i class="bi bi-cloud-arrow-down"></i> Download File
+                </button>
+
                 <h3 id="countdown"></h3>
+
+
                 @php
                     $files->file_url;
                     $download_url = url('download-file/' . $files->uuid);
@@ -78,75 +88,108 @@
     </div>
 
     <script>
-        const downloadButton = document.getElementById("download_link");
+        const downloadButton = document.getElementById("downloadButton");
         const countdown = document.getElementById("countdown");
         const downloadLink = {!! json_encode($download_url) !!};
 
         let timer;
-        let countdownValue = 20;
-        let focusOut = false;
+        let countdownValue = 5;
 
         downloadButton.addEventListener("click", function() {
             countdown.style.display = "block";
 
             timer = setInterval(function() {
 
-                if (!focusOut) {
-                    if (countdownValue <= 0) {
-                        clearInterval(timer);
-                        countdown.innerHTML = "Downloading...";
-                        setTimeout(function() {
-                            const a = document.createElement("a");
-                            a.style.display = "none";
-                            a.href = downloadLink;
-                            a.setAttribute("download", "");
-                            document.body.appendChild(a);
-                            a.click();
-                        }, 1000);
-                    } else {
-                        countdown.innerHTML =
-                            `Starting download in ${countdownValue} seconds...`;
-                    }
-                    countdownValue--;
+                if (countdownValue <= 0) {
+                    clearInterval(timer);
+                    countdown.innerHTML = "Downloading...";
+                    setTimeout(function() {
+                        const a = document.createElement("a");
+                        a.style.display = "none";
+                        a.href = downloadLink;
+                        a.setAttribute("download", "");
+                        document.body.appendChild(a);
+                        a.click();
+                    }, 1000);
+                } else {
+                    countdown.innerHTML =
+                        `Starting download in ${countdownValue} seconds...`;
                 }
+                countdownValue--;
             }, 1000);
-
         });
 
 
-        (function() {
-            var message = "%d seconds before download link appears";
-            var count = 15;
-            var countdown_element = document.getElementById("countdown");
-            var download_link = document.getElementById("download_link");
-            var timer = setInterval(function() {
 
-                if (!focusOut) {
-                    if (count) {
-                        countdown_element.innerHTML = "You have to wait %d seconds.".replace("%d", count);
-                        count--;
-                    } else {
-                        clearInterval(timer);
-                        countdown_element.style.display = "none";
-                        download_link.style.display = "";
-                    }
-                }
-            }, 1000);
+        // const downloadButton = document.getElementById("download_link");
+        // const countdown = document.getElementById("countdown");
+        // const downloadLink = {!! json_encode($download_url) !!};
 
-        })();
-        const unduh = (element) => {
-            element.hidden = true;
-        }
+        // let timer;
+        // let countdownValue = 20;
+        // let focusOut = false;
+
+        // downloadButton.addEventListener("click", function() {
+        //     countdown.style.display = "block";
+
+        //     timer = setInterval(function() {
+
+        //         if (!focusOut) {
+        //             if (countdownValue <= 0) {
+        //                 clearInterval(timer);
+        //                 countdown.innerHTML = "Downloading...";
+        //                 setTimeout(function() {
+        //                     const a = document.createElement("a");
+        //                     a.style.display = "none";
+        //                     a.href = downloadLink;
+        //                     a.setAttribute("download", "");
+        //                     document.body.appendChild(a);
+        //                     a.click();
+        //                 }, 1000);
+        //             } else {
+        //                 countdown.innerHTML =
+        //                     `Starting download in ${countdownValue} seconds...`;
+        //             }
+        //             countdownValue--;
+        //         }
+        //     }, 1000);
+
+        // });
+
+
+        // (function() {
+        //     var message = "%d seconds before download link appears";
+        //     var count = 15;
+        //     var countdown_element = document.getElementById("countdown");
+        //     var download_link = document.getElementById("download_link");
+        //     var timer = setInterval(function() {
+
+        //         if (!focusOut) {
+        //             if (count) {
+        //                 countdown_element.innerHTML = "You have to wait %d seconds.".replace("%d", count);
+        //                 count--;
+        //             } else {
+        //                 clearInterval(timer);
+        //                 countdown_element.style.display = "none";
+        //                 download_link.style.display = "";
+        //             }
+        //         }
+        //     }, 1000);
+
+        // })();
+        // const unduh = (element) => {
+        //     element.hidden = true;
+        // }
 
 
 
-        window.addEventListener('blur', function() {
-            focusOut = true;
-        })
+        // window.addEventListener('blur', function() {
+        //     focusOut = true;
+        // })
 
-        window.addEventListener('focus', function() {
-            focusOut = false;
-        });
+        // window.addEventListener('focus', function() {
+        //     focusOut = false;
+        // });
     </script>
 
     {{-- <script>
