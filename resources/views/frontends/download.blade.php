@@ -18,11 +18,14 @@
 
 
 
-                <button class="btn btn-success px-5 mt-3" id="downloadButton">
+                {{-- <button class="btn btn-success px-5 mt-3" id="downloadButton">
                     <i class="bi bi-cloud-arrow-down"></i> Download File
                 </button>
 
-                <h3 id="countdown"></h3>
+                <h3 id="countdown"></h3> --}}
+
+
+
 
 
                 @php
@@ -30,6 +33,13 @@
                     $download_url = url('download-file/' . $files->uuid);
                     // $file_path = url('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9/' . $files->file);
                 @endphp
+
+
+                <a class="button" href="{{ $download_url }}" id="download">Click To Download</a>
+                <button class="btn btn-success" id="btn"> <i class="bi bi-cloud-arrow-down"></i> Download File </button>
+
+
+
 
                 @php
                     $bytes = $files->size;
@@ -87,36 +97,49 @@
         </div>
     </div>
 
-    <script>
+    {{-- <script>
         const downloadButton = document.getElementById("downloadButton");
         const countdown = document.getElementById("countdown");
         const downloadLink = {!! json_encode($download_url) !!};
 
         let timer;
-        let countdownValue = 5;
+        let countdownValue = 25;
 
         downloadButton.addEventListener("click", function() {
             countdown.style.display = "block";
 
             timer = setInterval(function() {
 
-                if (countdownValue <= 0) {
-                    clearInterval(timer);
-                    countdown.innerHTML = "Downloading...";
-                    setTimeout(function() {
-                        const a = document.createElement("a");
-                        a.style.display = "none";
-                        a.href = downloadLink;
-                        a.setAttribute("download", "");
-                        document.body.appendChild(a);
-                        a.click();
-                    }, 1000);
-                } else {
-                    countdown.innerHTML =
-                        `Starting download in ${countdownValue} seconds...`;
+                if (!focusOut) {
+                    if (countdownValue <= 0) {
+                        clearInterval(timer);
+                        countdown.innerHTML = "Downloading...";
+                        setTimeout(function() {
+                            const a = document.createElement("a");
+                            a.style.display = "none";
+                            a.href = downloadLink;
+                            a.setAttribute("download", "");
+                            document.body.appendChild(a);
+                            a.click();
+                        }, 1000);
+                    } else {
+                        countdown.innerHTML =
+                            `Starting download in ${countdownValue} seconds...`;
+                    }
+                    countdownValue--;
                 }
-                countdownValue--;
             }, 1000);
+
+
+
+        });
+
+        window.addEventListener('blur', function() {
+            focusOut = true;
+        })
+
+        window.addEventListener('focus', function() {
+            focusOut = false;
         });
 
 
@@ -154,6 +177,7 @@
         //         }
         //     }, 1000);
 
+
         // });
 
 
@@ -190,11 +214,11 @@
         // window.addEventListener('focus', function() {
         //     focusOut = false;
         // });
-    </script>
+    </script> --}}
 
-    {{-- <script>
+    <script>
         var downloadButton = document.getElementById("download");
-        var counter = 45;
+        var counter = 5;
         var newElement = document.createElement("p");
         newElement.innerHTML = "www.xyz.com";
         var id;
@@ -226,6 +250,6 @@
         window.addEventListener('focus', function() {
             focusOut = false;
         });
-    </script> --}}
+    </script>
 
 @endsection
