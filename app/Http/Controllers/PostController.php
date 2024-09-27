@@ -102,7 +102,7 @@ class PostController extends Controller
             $ext = $file->getClientOriginalExtension();
             $original_name = $file->getClientOriginalName();
             $filename = $post->slug . '-' . time() . '-' . $uuid . '.' . $ext;
-            $file->move('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9/', $filename);
+            $file->move(public_path('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9/', $filename));
 
             $uploadfile = new ModelsFile();
             $uploadfile->post_id = $post->id;
@@ -112,7 +112,7 @@ class PostController extends Controller
             $uploadfile->uuid = $uuid;
 
             $uploadfile->file = $filename;
-            $uploadfile->file_url = URL::to('/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9/' . $filename);
+            // $uploadfile->file_url = URL::to('/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9/' . $filename);
 
             $uploadfile->save();
         }
