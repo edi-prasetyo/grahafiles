@@ -35,8 +35,10 @@
                 @endphp
 
 
-                <a class="button" href="{{ $download_url }}" id="download">Click To Download</a>
-                <button class="btn btn-success" id="btn"> <i class="bi bi-cloud-arrow-down"></i> Download File </button>
+                <a class="button like" onClick="this.style='display: none';" href="{{ $download_url }}" id="download">Click To
+                    Download</a>
+                <button class="btn btn-success" id="btn"> <i class="bi bi-cloud-arrow-down"></i> Open Link
+                    Download</button>
 
 
 
@@ -218,9 +220,9 @@
 
     <script>
         var downloadButton = document.getElementById("download");
-        var counter = 5;
+        var counter = 45;
         var newElement = document.createElement("p");
-        newElement.innerHTML = "www.xyz.com";
+        newElement.innerHTML = "Click Button to Open Link Download";
         var id;
         let focusOut = false;
         downloadButton.parentNode.replaceChild(newElement, downloadButton)
@@ -234,7 +236,7 @@
                         newElement.parentNode.replaceChild(downloadButton, newElement);
                         clearInterval(id);
                     } else {
-                        newElement.innerHTML = +counter.toString() + " second.Please Wait";
+                        newElement.innerHTML = "<h3>" + counter.toString() + " second. Please Wait</h3>";
                     }
                 }
             }, 1000);
