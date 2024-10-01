@@ -220,7 +220,7 @@
 
     <script>
         var downloadButton = document.getElementById("download");
-        var counter = 45;
+        var counter = 5;
         var newElement = document.createElement("p");
         newElement.innerHTML = "Click Button to Open Link Download";
         var id;

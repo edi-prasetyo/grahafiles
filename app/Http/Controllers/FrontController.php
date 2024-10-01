@@ -188,7 +188,7 @@ class FrontController extends Controller
         $counter->save();
         // $pathToFile = url('uploads/files/' . $file->file);
 
-        $path = public_path('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9/' . $file->file);
+        $path = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9/' . $file->file;
         // $pathToFile = url($path . $file->file);
 
         if (!Auth::check()) { //guest user identified by ip
