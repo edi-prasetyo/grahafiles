@@ -14,7 +14,12 @@
                         <div class="col-md-4">
                             <div class="card mb-3 shadow-sm">
                                 <div class="card-body">
-                                    <div class="card-img-cover rounded border">
+                                    <div class="card-img-cover rounded border relative">
+                                        @foreach ($item->files as $file)
+                                            <div class="badge rounded-pill text-bg-primary absolute">{{ $file->ext }}
+                                            </div>
+                                        @endforeach
+
                                         <div class="card-img-frame">
                                             <img src="{{ $item->image_url }}" class="img-fluid rounded"
                                                 alt="{{ $item->title }}">

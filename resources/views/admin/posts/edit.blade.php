@@ -6,7 +6,7 @@
     <div class="container">
 
         <div class="col-md-9 mx-auto">
-            <h2 class="my-5">Edit Post</h2>
+            <h2 class="my-5">Add New Post</h2>
 
             @if ($errors->any())
                 <div class="alert alert-danger">
@@ -20,7 +20,7 @@
             @endif
 
 
-            <form action="{{ url('posts/update', $post->id) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ url('posts/update/' . $post->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <div class="row">
@@ -49,35 +49,28 @@
 
                                 <input type="text" name="title" class="form-control" value="{{ $post->title }}">
                             </div>
-                            <div class="form-group mb-3">
 
-                                <input type="text" name="url" class="form-control" value="{{ $post->url }}">
-                            </div>
                         </div>
 
 
 
                         <div class="col-md-6">
                             <div class="row">
-                                <div class="col-6">
+                                {{-- <input type="file" name="image" class="img"> --}}
+
+                                <div class="col-6 mx-auto">
                                     <div id="imagePreview"
                                         class="d-flex flex-column justify-content-center align-items-center py-5 my-auto">
-                                        <p class="text-muted">CHANGE PHOTO</p>
+                                        <p class="text-muted">GANTI PHOTO</p>
                                         <i class="ti ti-photo-plus fs-1 mx-auto"></i>
-
                                     </div>
-                                    <input id="uploadFile" type="file" name="image[]" class="img">
+                                    <input id="uploadFile" type="file" name="image" class="img">
                                 </div>
-                                <div class="col-md-6">
-                                    <img src="{{ $post->previewImage->image_url }}" class="img-fluid rounded">
+                                <div class="col-6">
+                                    <img src="{{ $post->image_url }}" class="img-fluid">
                                 </div>
                             </div>
                         </div>
-
-
-
-
-
                     </div>
 
                     <div class="form-group my-3">
@@ -86,16 +79,6 @@
                             Minimal teks : <span id="maxContentPost"></span>
                         </div>
                     </div>
-
-
-                    {{-- <div class="form-group my-3">
-                        <select class="form-select" name="tag[]" id="multiple-select-clear-field"
-                            data-placeholder="Choose anything" multiple>
-                            @foreach ($tags as $tag)
-                                <option value="{{ $tag->id }}">{{ $tag->name }}</option>
-                            @endforeach
-                        </select>
-                    </div> --}}
 
                     <select name="tag[]" multiple="multiple" id="multiple-select-clear-field"
                         class="form-control select_multiple" multiple>
@@ -106,9 +89,14 @@
                             </option>
                         @endforeach
                     </select>
+                    <div class="form-group my-3">
+                        <label>File</label>
+                        <input type="file" name="file" class="form-control">
+                        {{ $file->file }}
+                    </div>
 
                     <div class="col-md-12">
-                        <button type="submit" class="btn btn-primary my-3">Update Artikel</button>
+                        <button type="submit" class="btn btn-primary my-3">Save</button>
                     </div>
                 </div>
 

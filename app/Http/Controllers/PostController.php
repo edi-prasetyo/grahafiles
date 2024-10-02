@@ -32,7 +32,7 @@ class PostController extends Controller
     public function index()
     {
         $user_id = Auth::user()->id;
-        $posts = Post::where('user_id', $user_id)->paginate(8);
+        $posts = Post::where('user_id', $user_id)->orderBy('id', 'desc')->paginate(20);
         return view('admin.posts.index', compact('posts'));
     }
 
@@ -72,7 +72,7 @@ class PostController extends Controller
         $post->category_id = $validated['category_id'];
         $post->title = $validated['title'];
         $post->content = $validated['content'];
-        $post->url = $request['url'];
+
         $post->user_id = $user_id;
         $post->status = 1;
         $post->views = 0;
@@ -126,14 +126,14 @@ class PostController extends Controller
     }
     public function edit(int $post_id)
     {
-
-        $post = Post::where('id', $post_id)->with('previewImage')->first();
+        $post = Post::where('id', $post_id)->first();
         $tags = Tag::all();
         // $tags = Tag::get()->pluck('name', 'id');
         $categories = Category::all();
+        $file = ModelsFile::where('post_id', $post_id)->first();
         // return $post;
         if (Auth::user()->id == $post->user_id) {
-            return view('admin.posts.edit', compact('post', 'categories', 'tags'));
+            return view('admin.posts.edit', compact('post', 'categories', 'tags', 'file'));
         } else {
             // redirect user to home page 
             return redirect('/posts')->with('success', 'You Canot Edit This Post');
@@ -141,38 +141,95 @@ class PostController extends Controller
     }
     public function update(Request $request, int $post_id)
     {
+
+        $uuid =  $uuid = Str::uuid()->toString();
+
+        $user_id = Auth::user()->id;
         $validated = $request->validate([
             'category_id' => 'required',
             'title' => 'required',
             'content' => 'required',
-            'url' => 'required',
             'tag.*' => 'exists:tags,id',
         ]);
 
-        $post = Post::where('id', $post_id)->with('previewImage')->first();
+        $post = Post::where('id', $post_id)->first();
         $post->category_id = $validated['category_id'];
         $post->title = $validated['title'];
         $post->content = $validated['content'];
-        $post->url = $validated['url'];
-        $post->update();
 
+        $post->user_id = $user_id;
+        $post->status = 1;
+
+        if ($request->hasFile('image')) {
+
+            $path = 'uploads/images/' . $post->image;
+            if (File::exists($path)) {
+                File::delete($path);
+            }
+
+            $manager = new ImageManager(new Driver());
+            $name_gen = hexdec(uniqid()) . '.' . $request->file('image')->getClientOriginalExtension();
+            $img = $manager->read($request->file('image'));
+
+            $img = $img->scale(500);
+            $img->toJpeg()->save('uploads/images/' . $name_gen);
+            $save_url = $name_gen;
+
+            $post->image = $save_url;
+            $post->image_url = URL::to('/uploads/images/' . $name_gen);
+        }
+
+        $file = ModelsFile::where('post_id', $post_id)->first();
+        // Upoload File
+        if ($request->hasFile('file')) {
+            $path = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9/' . $file->file;
+            if (File::exists($path)) {
+                File::delete($path);
+            }
+
+            $file = $request->file('file');
+            $size = $file->getSize();
+            $ext = $file->getClientOriginalExtension();
+            $original_name = $file->getClientOriginalName();
+            $filename = $post->slug . '-' . time() . '-' . $uuid . '.' . $ext;
+            $file->move('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9/', $filename);
+
+            $uploadfile = new ModelsFile();
+            $uploadfile->post_id = $post->id;
+            $uploadfile->name = $original_name;
+            $uploadfile->size = $size;
+            $uploadfile->ext = $ext;
+            $uploadfile->uuid = $uuid;
+
+            $uploadfile->file = $filename;
+            // $uploadfile->file_url = URL::to('/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9/' . $filename);
+
+            $uploadfile->save();
+        }
+
+        $post->update();
         $post->tag()->sync((array)$request->input('tag'));
 
-
-        Alert::success('Success Title', 'Success Message');
+        Alert::success('Post', 'Post Berhasi di Update');
         return redirect('posts');
     }
 
     public function destroy(int $post_id)
     {
-        $post = Post::where('id', $post_id)->with('previewImage')->first();
+        $post = Post::where('id', $post_id)->first();
+        $file = ModelsFile::where('post_id', $post_id)->first();
 
-        $path = 'uploads/images/' . $post->previewImage->image;
-        if (File::exists($path)) {
-            File::delete($path);
+        $image_path = 'uploads/images/' . $post->image;
+        if (File::exists($image_path)) {
+            File::delete($image_path);
+        }
+        $file_path = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9/' . $file->file;
+        if (File::exists($file_path)) {
+            File::delete($file_path);
         }
         $post->delete();
-        return redirect('posts')->with('success', 'Post deleted successfully');
+        Alert::success('Post', 'Post Berhasil di Hapus');
+        return redirect('posts');
     }
 
     public function user_posts()

@@ -24,7 +24,8 @@ class FrontController extends Controller
         $posts = Post::orderBy('id', 'desc')
             ->with('count')
             ->join('users', 'users.id', '=', 'posts.user_id')
-            ->select('posts.*', 'users.name as user_name')
+            ->join('categories', 'categories.id', '=', 'posts.category_id')
+            ->select('posts.*', 'users.name as user_name', 'categories.name as category_name')
             ->paginate(8);
         // return $posts;
         $popular = Post::orderBy('views', 'desc')->take(3)->get();
@@ -153,14 +154,6 @@ class FrontController extends Controller
         }
         if (Cookie::get($cookie_name) == '') { //check if cookie is set
             $cookie = cookie($cookie_name, '1', 60); //set the cookie
-            // $post->incrementReadCount(); //count the view
-
-            // $counter = new CounterDownload();
-            // $counter->file_id = $files->id;
-            // $counter->ip_address = request()->ip();
-            // $counter->user_agent = request()->userAgent();
-            // $counter->referer = request()->headers->get('referer');
-            // $counter->save();
 
             return response()
                 ->view('frontends.download', [

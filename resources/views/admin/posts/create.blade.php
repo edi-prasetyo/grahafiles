@@ -48,10 +48,7 @@
 
                                 <input type="text" name="title" class="form-control" placeholder="Judul">
                             </div>
-                            <div class="form-group mb-3">
 
-                                <input type="text" name="url" class="form-control" placeholder="Url">
-                            </div>
                         </div>
 
 

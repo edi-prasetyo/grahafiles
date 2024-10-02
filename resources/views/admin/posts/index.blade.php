@@ -40,7 +40,7 @@
                         </td>
                         <td>
                             <form action="{{ url('posts/delete', $post->id) }}" method="POST">
-                                <a class="btn btn-info btn-sm" href="{{ url('detail', $post->slug) }}">View</a>
+                                <a class="btn btn-info btn-sm" href="{{ url('file', $post->slug) }}">View</a>
                                 @can('post-edit')
                                     <a class="btn btn-primary btn-sm" href="{{ url('posts/edit', $post->id) }}">Edit</a>
                                 @endcan
