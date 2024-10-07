@@ -44,7 +44,7 @@ class FrontController extends Controller
     {
         $keyword = $request['keyword'];
 
-        $posts = Post::orderBy('id', 'desc')->where('title', 'like', "%" . $keyword . "%")
+        $posts = Post::with('count')->orderBy('id', 'desc')->where('title', 'like', "%" . $keyword . "%")
             ->paginate(8);
         $posts->appends(array('keyword' => $keyword));
 
@@ -59,6 +59,7 @@ class FrontController extends Controller
         $category = Category::where('slug', $category_slug)->first();
 
         $posts = Post::orderBy('id', 'desc')->where('category_id', $category->id)
+            ->with('count')
             ->join('users', 'users.id', '=', 'posts.user_id')
             ->select('posts.*', 'users.name as user_name')
             ->paginate(8);
@@ -74,7 +75,7 @@ class FrontController extends Controller
         $post_tags = PostTag::where('tag_id', $tag->id)->get();
         $tagName = $tag->name;
 
-        $posts = Post::whereHas('tag', function ($query) use ($tagName) {
+        $posts = Post::with('count')->whereHas('tag', function ($query) use ($tagName) {
             $query->whereName($tagName);
         })->orderBy('id', 'desc')->paginate(8);
 
@@ -168,8 +169,6 @@ class FrontController extends Controller
     }
     public function download_process($uuid)
     {
-
-
 
         $file = ModelsFile::where('uuid', $uuid)->first();
 

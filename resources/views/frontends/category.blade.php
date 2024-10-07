@@ -25,7 +25,11 @@
                             <div class="card mb-3 shadow-sm">
 
                                 <div class="card-body">
-                                    <div class="card-img-cover rounded border">
+                                    <div class="card-img-cover rounded border relative">
+                                        @foreach ($item->files as $file)
+                                            <div class="badge rounded-pill text-bg-primary absolute">{{ $file->ext }}
+                                            </div>
+                                        @endforeach
                                         <div class="card-img-frame">
                                             <img src="{{ $item->image_url }}" class="img-fluid rounded"
                                                 alt="{{ $item->title }}">
@@ -53,7 +57,7 @@
                                             <div class="d-flex justify-content-between align-items-start">
                                                 <div> <i class="bi bi-hdd"></i> {{ $bytes }} </div>
                                                 <div> <i class="bi bi-cloud-download"></i>
-                                                    {{ $file->download_count }} Download </div>
+                                                    {{ count($file->downloadCount) }} Download </div>
                                             </div>
                                         @endforeach
                                     </p>
