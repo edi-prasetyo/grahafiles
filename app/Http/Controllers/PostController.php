@@ -83,7 +83,7 @@ class PostController extends Controller
             $img = $manager->read($request->file('image'));
 
             // $img = $img->scale(500);
-            $img = $img->cover(300, 180);
+            $img = $img->cover(500, 300);
             $img->toJpeg()->save('uploads/images/' . $name_gen);
             $save_url = $name_gen;
 
