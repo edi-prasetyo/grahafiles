@@ -96,7 +96,7 @@ class FrontController extends Controller
             ->select('post_tags.*', 'tags.name as tag_name', 'tags.slug as tag_slug')
             ->get();
         // return $tags;
-        $related = Post::where('category_id', $post->category_id)->with('downloadCount')->take(3)->get();
+        $related = Post::where('category_id', $post->category_id)->take(3)->get();
         $popular = Post::orderBy('views', 'desc')->take(3)->get();
         $recent = Post::orderBy('id', 'desc')->take(3)->get();
 
