@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light shadow-sm border-bottom" aria-label="Offcanvas navbar large">
+<nav class="navbar navbar-expand-lg bg-body navbar-light shadow-sm" aria-label="Offcanvas navbar large">
     <div class="container">
         <a class="navbar-brand" href="{{ url('/') }}">
             @if ($option->logo_url == null)
@@ -21,27 +21,30 @@
             </div>
             <div class="offcanvas-body">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 flex-grow-1">
-                    <form class="input-group mt-3  me-3 mt-lg-0" role="search" style="width: 100%"
-                        action="{{ url('search') }}" method="GET">
-                        @csrf
-                        <input type="text" name="keyword" class="form-control" placeholder="Cari File"
-                            aria-label="Search Question" aria-describedby="button-addon2" value="{{ old('keyword') }}">
-                        <button class="btn btn-secondary" type="submit" id="button-addon2"><i class="ti ti-search"></i>
-                            Cari</button>
-                    </form>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/') }}">
+                            Home</a>
+                    </li>
+                    @foreach ($pages as $page)
+                        <li class="nav-item">
+                            <a href="{{ url('page', $page->slug) }}" class="nav-link">
+                                {{ $page->title }}
+                            </a>
+                        </li>
+                    @endforeach
                 </ul>
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     @guest
                         @if (Route::has('login'))
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}"><i class="ti ti-login-2"></i>
+                                <a class="nav-link" href="{{ route('login') }}"><i class="bi bi-box-arrow-in-right"></i>
                                     Login</a>
                             </li>
                         @endif
 
                         @if (Route::has('register'))
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('register') }}"><i class="ti ti-user-filled"></i>
+                                <a class="nav-link" href="{{ route('register') }}"><i class="bi bi-person"></i>
                                     {{ __('Register') }}</a>
                             </li>
                         @endif
@@ -106,8 +109,7 @@
         <div class="container">
             <nav class="nav text-center" aria-label="Secondary navigation">
                 @role('superadmin|writer|admin|demo')
-                    <a class="nav-link link-body-emphasis text-decoration-none" aria-current="page"
-                        href="{{ url('home') }}">
+                    <a class="nav-link link-body-emphasis text-decoration-none" aria-current="page" href="{{ url('home') }}">
                         <i class="ti ti-home"></i> Dashboard</a>
                 @endrole
                 @role('superadmin|demo')

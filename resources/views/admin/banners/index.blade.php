@@ -35,7 +35,7 @@
                         <td>{{ $data->name }}</td>
 
                         <td>
-                            <form action="{{ url('banner/delete', $data->id) }}" method="POST">
+                            <form action="{{ url('banners/delete', $data->id) }}" method="POST">
                                 <a class="btn btn-info btn-sm" href="{{ url('page', $data->slug) }}">View</a>
                                 @can('banner-edit')
                                     <a class="btn btn-primary btn-sm" href="{{ url('banners/edit', $data->id) }}">Edit</a>

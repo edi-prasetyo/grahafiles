@@ -28,13 +28,25 @@ class FrontController extends Controller
             ->select('posts.*', 'users.name as user_name', 'categories.name as category_name')
             ->paginate(8);
         // return $posts;
-        $popular = Post::orderBy('views', 'desc')->take(3)->get();
-        $recent = Post::orderBy('id', 'desc')->take(3)->get();
+        $popular = Post::orderBy('views', 'desc')
+            ->join('categories', 'categories.id', '=', 'posts.category_id')
+            ->select('posts.*', 'categories.name as category_name')
+            ->take(12)
+            ->get();
+        $recent = Post::orderBy('id', 'desc')
+            ->join('categories', 'categories.id', '=', 'posts.category_id')
+            ->select('posts.*', 'categories.name as category_name')
+            ->take(12)
+            ->get();
         return view('frontends.index', compact('posts', 'popular', 'recent'));
     }
     public function post()
     {
-        $posts = Post::orderBy('id', 'desc')->with('files')->paginate(8);
+        $posts = Post::orderBy('id', 'desc')
+            ->with('files')
+            ->join('categories', 'categories.id', '=', 'posts.category_id')
+            ->select('posts.*', 'categories.name as category_name')
+            ->paginate(18);
         $popular = Post::orderBy('views', 'desc')->take(3)->get();
         $recent = Post::orderBy('id', 'desc')->take(3)->get();
         // return $posts;
@@ -44,14 +56,14 @@ class FrontController extends Controller
     {
         $keyword = $request['keyword'];
 
-        $posts = Post::with('count')->orderBy('id', 'desc')->where('title', 'like', "%" . $keyword . "%")
-            ->paginate(8);
+        $posts = Post::with('count')
+            ->orderBy('id', 'desc')
+            ->where('title', 'like', "%" . $keyword . "%")
+            ->join('categories', 'categories.id', '=', 'posts.category_id')
+            ->select('posts.*', 'categories.name as category_name')
+            ->paginate(18);
         $posts->appends(array('keyword' => $keyword));
-
-        $popular = Post::orderBy('views', 'desc')->take(3)->get();
-        $recent = Post::orderBy('id', 'desc')->take(3)->get();
-
-        return view('frontends.search', compact('posts', 'popular', 'recent', 'keyword'));
+        return view('frontends.search', compact('posts', 'keyword'));
     }
 
     public function category($category_slug)
@@ -61,12 +73,12 @@ class FrontController extends Controller
         $posts = Post::orderBy('id', 'desc')->where('category_id', $category->id)
             ->with('count')
             ->join('users', 'users.id', '=', 'posts.user_id')
-            ->select('posts.*', 'users.name as user_name')
-            ->paginate(8);
-        $popular = Post::orderBy('views', 'desc')->take(3)->get();
-        $recent = Post::orderBy('id', 'desc')->take(3)->get();
+            ->join('categories', 'categories.id', '=', 'posts.category_id')
+            ->select('posts.*', 'users.name as user_name', 'categories.name as category_name')
+            ->paginate(18);
+
         // return $posts;
-        return view('frontends.category', compact('posts', 'popular', 'recent', 'category'));
+        return view('frontends.category', compact('posts', 'category'));
     }
     public function tag($tag_slug)
     {
@@ -77,7 +89,10 @@ class FrontController extends Controller
 
         $posts = Post::with('count')->whereHas('tag', function ($query) use ($tagName) {
             $query->whereName($tagName);
-        })->orderBy('id', 'desc')->paginate(8);
+        })
+            ->join('categories', 'categories.id', '=', 'posts.category_id')
+            ->select('posts.*', 'categories.name as category_name')
+            ->orderBy('id', 'desc')->paginate(18);
 
         $popular = Post::orderBy('views', 'desc')->take(3)->get();
         $recent = Post::orderBy('id', 'desc')->take(3)->get();
@@ -96,7 +111,10 @@ class FrontController extends Controller
             ->select('post_tags.*', 'tags.name as tag_name', 'tags.slug as tag_slug')
             ->get();
         // return $tags;
-        $related = Post::where('category_id', $post->category_id)->take(3)->get();
+        $related = Post::where('category_id', $post->category_id)
+            ->join('categories', 'categories.id', '=', 'posts.category_id')
+            ->select('posts.*', 'categories.name as category_name')
+            ->take(3)->get();
         $popular = Post::orderBy('views', 'desc')->take(3)->get();
         $recent = Post::orderBy('id', 'desc')->take(3)->get();
 
@@ -139,7 +157,6 @@ class FrontController extends Controller
             return view('frontends.show', compact('post', 'related', 'popular', 'recent', 'user', 'tags', 'files'));
         }
     }
-
 
 
     public function download($uuid)

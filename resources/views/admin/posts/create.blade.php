@@ -6,7 +6,7 @@
     <div class="container">
 
         <div class="col-md-9 mx-auto">
-            <h2 class="my-5">Add New Post</h2>
+            <h2 class="my-5">Add New Post 2</h2>
 
             @if ($errors->any())
                 <div class="alert alert-danger">
@@ -86,7 +86,9 @@
                     </div>
                     <div class="form-group my-3">
                         <label>File</label>
-                        <input type="file" name="file" class="form-control">
+                        <input class="form-control" type="file" id="upload_requiremnt_files" name="file[]" multiple>
+                        <div id="upload_count"></div>
+                        <div id="upload_prev"></div>
                     </div>
 
                     <div class="col-md-12">
@@ -190,6 +192,84 @@
             registerSummernote('.summernote', 'Konten', 900, function(max) {
                 $('#maxContentPost').text(max)
             });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function(readyEvent) {
+
+            var filesToUpload = []; //store files
+            var removeFile = []; //remove remove files
+            var fileCounter = 0; //count files
+
+            //upload file
+            $('#upload_requiremnt_files').on('change', function() {
+
+                $("#upload_prev").html('');
+
+                fileCounter = this.files.length; //count files
+
+                //Store all files to our main array
+                var files = this.files;
+                for (var i = 0; i < files.length; i++) {
+                    filesToUpload.push(files[i]);
+                }
+
+                //Push file to remove file to that we can match to remove file
+                for (var i = 0, f; f = files[i]; i++) {
+                    removeFile.push('<div class="filenameupload" id="' + i + '"  fileName="' + f.name +
+                        '" >' + f.name +
+                        '<p class="close" ><i class="fa fa-window-close" aria-hidden="true"></i></p></div>'
+                    );
+                }
+
+                //Append Remove file icon to each file
+                if (removeFile.length) {
+                    $("#upload_prev").html(removeFile.join(""));
+                }
+
+                //Show counter
+                $('#upload_count').show().text('Total Files To Upload = ' + fileCounter)
+
+            });
+
+            //Remove files 
+            $(document).on('click', '.close', function() {
+
+                var i = $(this).parent().attr("id"); //get index
+                var fileName = $(this).parent().attr("fileName"); //get fileName
+
+                //Loop through all the file and remove Files
+                for (i = 0; i < filesToUpload.length; ++i) {
+                    if (filesToUpload[i].name == fileName) {
+                        //Remove the one element at the index where we get a match
+                        filesToUpload.splice(i, 1);
+                        removeFile.splice(i, 1);
+                    }
+                }
+
+                //Remove file from DOM
+                $(this).parent().remove();
+
+                //Decrease counter
+                fileCounter--
+
+                //Update counter
+                if (fileCounter > 0) {
+                    $('#upload_count').text('Total Files To Upload = ' + fileCounter)
+                } else {
+                    $('#upload_count').hide()
+                }
+            })
+
+            //Demo Upload button
+            $(document).on('click', '#upload_file', function() {
+                if (filesToUpload.length) {
+                    alert(filesToUpload.length + ' files will be sent to controller')
+                } else {
+                    alert('Nothing to upload')
+                }
+            })
         });
     </script>
 @endsection

@@ -1,4 +1,4 @@
-<div class="card shadow-sm">
+<div class="card shadow-sm border-0">
     <div class="card-header bg-body">
         Recent Posts
     </div>
@@ -6,14 +6,14 @@
         @foreach ($recent as $k => $recent)
             <div class="row mb-3">
                 <div class="col-5">
-                    <div class="sidebar-img-cover rounded">
+                    <div class="sidebar-img-cover rounded border">
                         <div class="sidebar-img-frame">
-                            <img src="{{ $recent->image_url }}" class="img-fluid rounded border">
+                            <img src="{{ $recent->image_url }}" class="img-fluid rounded">
                         </div>
                     </div>
                 </div>
                 <div class="col-7">
-                    <h6 class="card-title"><a href="{{ url('file', $recent->slug) }}"
+                    <h6 class="card-title"><a href="{{ url('detail', $recent->slug) }}"
                             class="text-decoration-none text-body-emphasis">
                             {!! Str::words($recent->title, 4) !!}</a></h6>
                     <small><i class="bi bi-clock"></i> @php
@@ -46,7 +46,7 @@
         @endforeach
     @endif
 </div>
-<div class="card mt-3 shadow-sm">
+<div class="card mt-3 shadow-sm border-0">
     <div class="card-header bg-body">
         Popular Posts
     </div>
@@ -54,14 +54,14 @@
         @foreach ($popular as $popular)
             <div class="row mb-3">
                 <div class="col-5">
-                    <div class="sidebar-img-cover rounded">
+                    <div class="sidebar-img-cover rounded border">
                         <div class="sidebar-img-frame">
-                            <img src="{{ $popular->image_url }}" class="img-fluid rounded border">
+                            <img src="{{ $popular->image_url }}" class="img-fluid rounded">
                         </div>
                     </div>
                 </div>
                 <div class="col-7">
-                    <h6><a href="{{ url('file', $popular->slug) }}" class="text-decoration-none text-body-emphasis">
+                    <h6><a href="{{ url('detail', $popular->slug) }}" class="text-decoration-none text-body-emphasis">
                             {!! Str::words($popular->title, 4) !!}</a></h6>
                     <small><i class="ti ti-eye"></i> {{ $popular->views }} View</small>
                 </div>

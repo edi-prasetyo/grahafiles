@@ -1,11 +1,20 @@
 @extends('layouts.front')
 @section('content')
+    @include('layouts.inc.searchbar')
     <div class="container mb-5">
-        <div class="col-md-10 mx-auto">
+        <div class="col-md-10 mx-auto mt-5">
+            <div class="col-md-9 mx-auto mb-5">
+                <div class="row">
+                    <div class="col-md-6">
+                        <img class="img-fluid rounded" src="{{ $post->image_url }}">
+                    </div>
+                    <div class="col-md-6">
+                        <h1 class="">{{ $post->title }} Format {{ $files->ext }}</h1>
+                    </div>
+                </div>
+            </div>
+
             <div class="align-items-center vh-50 text-center">
-                <h1 class="mt-5 mb-5">{{ $post->title }}</h1>
-
-
                 @php
                     $files->file_url;
                     $download_url = url('download-file/' . $files->uuid);
@@ -13,7 +22,8 @@
                 @endphp
 
 
-                <a class="button like" onClick="this.style='display: none';" href="{{ $download_url }}" id="download">Click To
+                <a class="button like" onClick="this.style='display: none';" href="{{ $download_url }}" id="download">Click
+                    To
                     Download</a>
                 <button class="btn btn-success" id="btn"> <i class="bi bi-cloud-arrow-down"></i> Open Link
                     Download</button>
@@ -70,6 +80,8 @@
                         href={{ url('page/disclaimer') }}>ini</a>
                 </p>
 
+                {!! $post->content !!}
+
                 {{-- {{ $files->file_url }} --}}
 
 
@@ -80,7 +92,7 @@
 
     <script>
         var downloadButton = document.getElementById("download");
-        var counter = 45;
+        var counter = 15;
         var newElement = document.createElement("p");
         newElement.innerHTML = "Click Button to Open Link Download";
         var id;

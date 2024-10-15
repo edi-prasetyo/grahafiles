@@ -89,10 +89,23 @@
                             </option>
                         @endforeach
                     </select>
-                    <div class="form-group my-3">
+                    <div class="form-group my-5">
                         <label>File</label>
-                        <input type="file" name="file" class="form-control">
-                        {{ $file->file }}
+                        <input type="file" name="file[]" class="form-control" multiple>
+                        <div class="row mt-5">
+                            @foreach ($files as $file)
+                                <div class="col-md-3">
+                                    <div class="card position-relative mb-3">
+                                        <div class="card-body">
+                                            <a href="{{ url('posts/delete/file/' . $file->id) }}"
+                                                class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-2"><span
+                                                    class=""><i class="bi bi-trash3-fill"></i></span></a>
+                                            {{ $file->name }}
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
 
                     <div class="col-md-12">

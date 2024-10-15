@@ -96,26 +96,31 @@ class PostController extends Controller
 
         // Upoload File
         if ($request->hasFile('file')) {
+            $i = 1;
+            foreach ($request->file('file') as $uploadfile) {
 
-            $file = $request->file('file');
-            $size = $file->getSize();
-            $ext = $file->getClientOriginalExtension();
-            $original_name = $file->getClientOriginalName();
-            $filename = $post->slug . '-' . time() . '-' . $uuid . '.' . $ext;
-            $file->move('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9/', $filename);
 
-            $uploadfile = new ModelsFile();
-            $uploadfile->post_id = $post->id;
-            $uploadfile->name = $original_name;
-            $uploadfile->size = $size;
-            $uploadfile->ext = $ext;
-            $uploadfile->uuid = $uuid;
+                $size = $uploadfile->getSize();
+                $ext = $uploadfile->getClientOriginalExtension();
+                $original_name = $uploadfile->getClientOriginalName();
+                $filename = 'edikomputer.com-' . $post->slug .  $i++ . '-' . time() . '-' . $uuid . '.' . $ext;
+                $uploadfile->move('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9/', $filename);
 
-            $uploadfile->file = $filename;
-            // $uploadfile->file_url = URL::to('/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9/' . $filename);
+                $uploadfilePost = new ModelsFile();
+                $uploadfilePost->post_id = $post->id;
+                $uploadfilePost->name = $original_name;
+                $uploadfilePost->size = $size;
+                $uploadfilePost->ext = $ext;
+                $uploadfilePost->uuid = $uuid;
 
-            $uploadfile->save();
+                $uploadfilePost->file = $filename;
+                // $uploadfile->file_url = URL::to('/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9/' . $filename);
+
+                $uploadfilePost->save();
+            }
         }
+
+
 
         Alert::success('Post', 'Artikel Berhasil di Posting');
         return redirect('posts');
@@ -130,10 +135,10 @@ class PostController extends Controller
         $tags = Tag::all();
         // $tags = Tag::get()->pluck('name', 'id');
         $categories = Category::all();
-        $file = ModelsFile::where('post_id', $post_id)->first();
+        $files = ModelsFile::where('post_id', $post_id)->get();
         // return $post;
         if (Auth::user()->id == $post->user_id) {
-            return view('admin.posts.edit', compact('post', 'categories', 'tags', 'file'));
+            return view('admin.posts.edit', compact('post', 'categories', 'tags', 'files'));
         } else {
             // redirect user to home page 
             return redirect('/posts')->with('success', 'You Canot Edit This Post');
@@ -150,6 +155,7 @@ class PostController extends Controller
             'title' => 'required',
             'content' => 'required',
             'tag.*' => 'exists:tags,id',
+            'file' => 'required'
         ]);
 
         $post = Post::where('id', $post_id)->first();
@@ -182,36 +188,49 @@ class PostController extends Controller
         $file = ModelsFile::where('post_id', $post_id)->first();
         // Upoload File
         if ($request->hasFile('file')) {
-            $path = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9/' . $file->file;
-            if (File::exists($path)) {
-                File::delete($path);
+
+            $i = 1;
+            foreach ($request->file('file') as $uploadfile) {
+
+
+                // $file = $request->file('file');
+                $size = $uploadfile->getSize();
+                $ext = $uploadfile->getClientOriginalExtension();
+                $original_name = $uploadfile->getClientOriginalName();
+                $filename = 'edikomputer.com-' . $post->slug . $i++ . '-' . time() . '-' . $uuid . '.' . $ext;
+                $uploadfile->move('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9/', $filename);
+
+                $uploadUpdate = new ModelsFile();
+                $uploadUpdate->post_id = $post->id;
+                $uploadUpdate->name = $original_name;
+                $uploadUpdate->size = $size;
+                $uploadUpdate->ext = $ext;
+                $uploadUpdate->uuid = $uuid;
+
+                $uploadUpdate->file = $filename;
+                // $uploadfile->file_url = URL::to('/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9/' . $filename);
+
+                $uploadUpdate->save();
             }
-
-            $file = $request->file('file');
-            $size = $file->getSize();
-            $ext = $file->getClientOriginalExtension();
-            $original_name = $file->getClientOriginalName();
-            $filename = $post->slug . '-' . time() . '-' . $uuid . '.' . $ext;
-            $file->move('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9/', $filename);
-
-            $uploadfile = new ModelsFile();
-            $uploadfile->post_id = $post->id;
-            $uploadfile->name = $original_name;
-            $uploadfile->size = $size;
-            $uploadfile->ext = $ext;
-            $uploadfile->uuid = $uuid;
-
-            $uploadfile->file = $filename;
-            // $uploadfile->file_url = URL::to('/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9/' . $filename);
-
-            $uploadfile->save();
         }
 
         $post->update();
         $post->tag()->sync((array)$request->input('tag'));
 
         Alert::success('Post', 'Post Berhasi di Update');
-        return redirect('posts');
+        return redirect()->back();
+    }
+
+    public function destroy_file($file_id)
+    {
+        $file = ModelsFile::where('id', $file_id)->first();
+        $file_path = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9/' . $file->file;
+        if (File::exists($file_path)) {
+            File::delete($file_path);
+        }
+        $file->delete();
+        Alert::success('Post', 'Post Berhasil di Hapus');
+        return redirect()->back();
     }
 
     public function destroy(int $post_id)

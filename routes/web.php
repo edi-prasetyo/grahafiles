@@ -20,14 +20,14 @@ use App\Http\Controllers\TagController;
 // Route::get('/', function () {
 
 // });
-Auth::routes(['verify' => true, 'register' => false]);
+Auth::routes(['verify' => true, 'register' => true]);
 Route::get('/', [FrontController::class, 'index']);
 Route::get('/email/verify', function () {
     return view('auth.verify-email');
 })->middleware('auth')->name('verification.notice');
 
 // Route Frontend
-Route::get('/file/{post_slug}', [FrontController::class, 'show']);
+Route::get('/detail/{post_slug}', [FrontController::class, 'show']);
 Route::get('/files', [FrontController::class, 'post']);
 Route::get('/search', [FrontController::class, 'search']);
 Route::get('/category/{category_slug}', [FrontController::class, 'category']);
@@ -36,6 +36,7 @@ Route::get('/page/{slug}', [FrontController::class, 'page']);
 Route::get('download/{uuid}', [FrontController::class, 'download']);
 Route::post('download/count', [FrontController::class, 'count']);
 Route::get('download-file/{uuid}', [FrontController::class, 'download_process']);
+Route::get('short/{string}', [FrontController::class, 'short']);
 
 // Auth::routes();
 Route::get('/home', [HomeController::class, 'index'])->name('home');
@@ -74,6 +75,7 @@ Route::middleware('auth')->group(function () {
     Route::post('posts/update/{post_id}', [PostController::class, 'update']);
     Route::delete('posts/delete/{post_id}', [PostController::class, 'destroy']);
     Route::get('posts/show/{post_id}', [PostController::class, 'show']);
+    Route::get('posts/delete/file/{file_id}', [PostController::class, 'destroy_file']);
 
 
 

@@ -1,9 +1,9 @@
 <div class="my-3">
-    @if ($list_banner == '')
+    @if ($list_banner == null)
         <small class=""> Sponsored Links</small>
         <div class="d-flex justify-content-center align-items-center rounded w-100"
             style="height: 320px; width:100%; background-color: rgb(233, 236, 239);">
-            <span style="color: rgb(166, 168, 170); font: bold 8pt Arial;">Google Ads</span>
+            <span style="color: rgb(166, 168, 170); font: bold 8pt Arial;"> Ads</span>
         </div>
     @else
         @foreach ($list_banner as $list)
