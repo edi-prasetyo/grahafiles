@@ -1,4 +1,4 @@
-<div class="my-3">
+<div class="">
     @if ($list_banner == null)
         <small class=""> Sponsored Links</small>
         <div class="d-flex justify-content-center align-items-center rounded w-100"
