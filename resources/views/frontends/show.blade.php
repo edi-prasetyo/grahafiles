@@ -118,7 +118,7 @@
                             class="btn btn-outline-secondary btn-sm">{{ $tag->tag_name }}</span></a>
                 @endforeach
                 <div class="d-grid gap-2 mt-3">
-                    <div class="row">
+                    {{-- <div class="row">
                         @if ($download_banner == '')
                             <small class=""> Sponsored Links</small>
                             <div class="d-flex justify-content-center align-items-center rounded w-100"
@@ -138,7 +138,7 @@
                                 </div>
                             @endforeach
                         @endif
-                    </div>
+                    </div> --}}
                     <h4 class="related mt-2 mb-3"><span>Related Posts</span></h4>
                     <div class="row">
                         @foreach ($related as $related)
