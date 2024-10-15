@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="{{ $option->favicon_url }}">
-    {{ $option->google_ads }}
+    {!! $option->google_ads !!}
 </head>
 
 <body class="d-flex flex-column min-vh-100 bg-body-secondary">
