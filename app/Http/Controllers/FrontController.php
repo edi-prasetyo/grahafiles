@@ -27,12 +27,25 @@ class FrontController extends Controller
             ->join('categories', 'categories.id', '=', 'posts.category_id')
             ->select('posts.*', 'users.name as user_name', 'categories.name as category_name')
             ->paginate(8);
+
+
+
         // return $posts;
-        $popular = Post::orderBy('views', 'desc')
-            ->join('categories', 'categories.id', '=', 'posts.category_id')
-            ->select('posts.*', 'categories.name as category_name')
-            ->take(12)
-            ->get();
+        // $popular = Post::orderBy('views', 'desc')
+        //     ->join('categories', 'categories.id', '=', 'posts.category_id')
+        //     ->select('posts.*', 'categories.name as category_name')
+        //     ->take(12)
+        //     ->get();
+
+
+        $popular = Post::withCount('counters')
+            ->orderBy('counters_count', 'desc')
+            ->take(12)->get();
+
+
+
+
+
         $recent = Post::orderBy('id', 'desc')
             ->join('categories', 'categories.id', '=', 'posts.category_id')
             ->select('posts.*', 'categories.name as category_name')
@@ -43,14 +56,15 @@ class FrontController extends Controller
     public function post()
     {
         $posts = Post::orderBy('id', 'desc')
-            ->with('files')
+            ->withCount('counter')
             ->join('categories', 'categories.id', '=', 'posts.category_id')
             ->select('posts.*', 'categories.name as category_name')
+            ->orderBy('counter_count', 'desc')
             ->paginate(18);
-        $popular = Post::orderBy('views', 'desc')->take(3)->get();
+
         $recent = Post::orderBy('id', 'desc')->take(3)->get();
-        // return $posts;
-        return view('frontends.post', compact('posts', 'popular', 'recent'));
+        return $posts;
+        return view('frontends.post', compact('posts', 'recent'));
     }
     public function search(Request $request)
     {
@@ -76,7 +90,6 @@ class FrontController extends Controller
             ->join('categories', 'categories.id', '=', 'posts.category_id')
             ->select('posts.*', 'users.name as user_name', 'categories.name as category_name')
             ->paginate(18);
-
         // return $posts;
         return view('frontends.category', compact('posts', 'category'));
     }
@@ -115,8 +128,13 @@ class FrontController extends Controller
             ->join('categories', 'categories.id', '=', 'posts.category_id')
             ->select('posts.*', 'categories.name as category_name')
             ->take(3)->get();
-        $popular = Post::orderBy('views', 'desc')->take(3)->get();
+        $popular = Post::with('counters')->withCount('counters')
+            ->orderBy('counters_count', 'desc')
+            ->take(3)->get();
+
         $recent = Post::orderBy('id', 'desc')->take(3)->get();
+
+
 
         $user = User::where('id', $post->user_id)->first();
 

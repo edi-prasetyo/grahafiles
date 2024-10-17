@@ -27,10 +27,10 @@ class Post extends Model
         return $this->save();
     }
 
-    public function counterPost()
-    {
-        return $this->hasOne(CounterPost::class)->latestOfMany();
-    }
+    // public function counterPost()
+    // {
+    //     return $this->hasOne(CounterPost::class)->latestOfMany();
+    // }
     public function count()
     {
         return $this->hasMany(CounterPost::class);
@@ -46,5 +46,10 @@ class Post extends Model
     public function tag()
     {
         return $this->belongsToMany(Tag::class, 'post_tags');
+    }
+
+    public function counters()
+    {
+        return $this->hasMany(CounterPost::class);
     }
 }

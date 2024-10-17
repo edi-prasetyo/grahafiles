@@ -155,7 +155,7 @@ class PostController extends Controller
             'title' => 'required',
             'content' => 'required',
             'tag.*' => 'exists:tags,id',
-            'file' => 'required'
+            'file' => 'nullable'
         ]);
 
         $post = Post::where('id', $post_id)->first();

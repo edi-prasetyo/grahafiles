@@ -63,7 +63,7 @@
                 <div class="col-7">
                     <h6><a href="{{ url('detail', $popular->slug) }}" class="text-decoration-none text-body-emphasis">
                             {!! Str::words($popular->title, 4) !!}</a></h6>
-                    <small><i class="ti ti-eye"></i> {{ $popular->views }} View</small>
+                    <small><i class="ti ti-eye"></i> {{ count($popular->counters) }} View</small>
                 </div>
             </div>
         @endforeach
