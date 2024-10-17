@@ -42,10 +42,6 @@ class FrontController extends Controller
             ->orderBy('counters_count', 'desc')
             ->take(12)->get();
 
-
-
-
-
         $recent = Post::orderBy('id', 'desc')
             ->join('categories', 'categories.id', '=', 'posts.category_id')
             ->select('posts.*', 'categories.name as category_name')
@@ -181,6 +177,7 @@ class FrontController extends Controller
     {
         $files = ModelsFile::where('uuid', $uuid)->first();
         $post = Post::where('id', $files->post_id)->first();
+        $randoms = Post::inRandomOrder()->take(6)->get();
 
 
         if (!Auth::check()) { //guest user identified by ip
@@ -199,7 +196,7 @@ class FrontController extends Controller
                 ])
                 ->withCookie($cookie); //store the cookie
         } else {
-            return view('frontends.download', compact('files', 'post'));
+            return view('frontends.download', compact('files', 'post', 'randoms'));
         }
     }
     public function download_process($uuid)

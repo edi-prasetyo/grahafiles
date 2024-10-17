@@ -80,12 +80,51 @@
                         href={{ url('page/disclaimer') }}>ini</a>
                 </p>
 
-                {!! $post->content !!}
 
-                {{-- {{ $files->file_url }} --}}
+
+
 
 
             </div>
+        </div>
+
+        <h3 class="text-center my-5">Random Files</h3>
+        <div class="row">
+            {{-- Random Posts --}}
+            @foreach ($randoms as $k => $item)
+                {{-- @if ($k && $k % 4 == 0)
+            <div class="col-md-2">
+                @include('frontends.list_banner')
+            </div>
+        @endif --}}
+                <div class="col-md-2 col-6">
+                    <a class="text-body-emphasis text-decoration-none" href="{{ url('detail/' . $item->slug) }}">
+                        <div class="card mb-3 shadow-sm border-0">
+                            <div class="card-body">
+                                <div class="card-img-cover rounded relative">
+
+                                    {{-- <div class="badge rounded-pill text-bg-primary absolute"> {{ $item->category_name }}
+                        </div> --}}
+
+
+                                    <div class="card-img-frame">
+                                        <img src="{{ $item->image_url }}" class="img-fluid rounded"
+                                            alt="{{ $item->title }}">
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="card-footer bg-body">
+                                <h1 class="fs-6 card-title fw-light">
+
+                                    {{ Str::words($item->title, 4) }}
+                                </h1>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            @endforeach
         </div>
     </div>
 

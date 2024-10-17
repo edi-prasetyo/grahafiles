@@ -105,6 +105,10 @@
 
 
                 </div>
+                <div class="mt-5 mb-3">
+                    {!! $post->content !!}
+                </div>
+
 
                 <div class="my-3"> Category :
                     <span class="badge bg-success-subtle  ">

@@ -20,7 +20,7 @@ use App\Http\Controllers\TagController;
 // Route::get('/', function () {
 
 // });
-Auth::routes(['verify' => true, 'register' => true]);
+Auth::routes(['verify' => true, 'register' => false]);
 Route::get('/', [FrontController::class, 'index']);
 Route::get('/email/verify', function () {
     return view('auth.verify-email');
