@@ -50,7 +50,7 @@
                             @endphp
                             {{ $bytes }}
                         </td>
-                        <td>{{ $file->download_count }}</td>
+                        <td>{{ count($file->downloadCount) }}</td>
 
                     </tr>
                 @endforeach

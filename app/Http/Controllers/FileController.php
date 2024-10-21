@@ -11,8 +11,10 @@ class FileController extends Controller
     {
         $files = ModelsFile::orderBy('id', 'asc')
             ->join('posts', 'posts.id', '=', 'files.post_id')
+            ->with('downloadCount')
             ->select('files.*', 'posts.title as post_title')
-            ->paginate(10);
+            ->paginate(20);
+        // return $files;
         return view('admin.files.index', compact('files'));
     }
 }

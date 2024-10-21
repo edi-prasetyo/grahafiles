@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CounterDownload;
+use App\Models\CounterPost;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
@@ -31,7 +33,16 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $data = CounterPost::selectRaw("date_format(created_at, '%Y-%m-%d') as date, count(*) as aggregate")
+            ->whereDate('created_at', '>=', now()->subDays(30))
+            ->groupBy('date')
+            ->get();
+        $downloaded = CounterDownload::selectRaw("date_format(created_at, '%Y-%m-%d') as date, count(*) as aggregate")
+            ->whereDate('created_at', '>=', now()->subDays(30))
+            ->groupBy('date')
+            ->get();
+        // return $data;
+        return view('home', compact('data', 'downloaded'));
     }
     public function profile()
     {

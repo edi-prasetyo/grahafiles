@@ -32,11 +32,12 @@ class PostController extends Controller
     public function index()
     {
         $user_id = Auth::user()->id;
-        $posts = Post::where('user_id', $user_id)->orderBy('id', 'desc')->paginate(20);
+        $posts = Post::where('user_id', $user_id)
+            ->with('counters')
+            ->orderBy('id', 'desc')
+            ->paginate(20);
         return view('admin.posts.index', compact('posts'));
     }
-
-
 
     public function create()
     {
