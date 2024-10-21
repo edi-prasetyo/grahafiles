@@ -20,23 +20,27 @@
             </div> --}}
 
             <div class="row mt-3">
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
                             Pageview
                         </div>
                         <div class="card-body">
-                            <canvas id="myChart"></canvas>
+                            <div style="height: 300px">
+                                <canvas id="myChart"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 mt-3">
                     <div class="card">
                         <div class="card-header">
                             Downloaded
                         </div>
                         <div class="card-body">
-                            <canvas id="myChart_second"></canvas>
+                            <div style="height: 300px; width:100%">
+                                <canvas id="myChart_second"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -50,7 +54,7 @@
 @section('scripts')
     <script>
         const data = {
-            labels: @json($data->map(fn($data) => date('d M Y', strtotime($data->date)))),
+            labels: @json($data->map(fn($data) => date('d M', strtotime($data->date)))),
             datasets: [{
                 label: 'Pageviews',
                 // backgroundColor: 'rgba(255, 99, 132, 0.3)',
@@ -68,6 +72,7 @@
             data: data,
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 plugins: {
                     legend: {
                         display: false
@@ -120,6 +125,7 @@
             data: data2,
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 plugins: {
                     legend: {
                         display: false
