@@ -52,12 +52,14 @@ class FrontController extends Controller
     public function post()
     {
         $posts = Post::orderBy('id', 'desc')
+            ->withCount('counter')
             ->join('categories', 'categories.id', '=', 'posts.category_id')
             ->select('posts.*', 'categories.name as category_name')
+            ->orderBy('counter_count', 'desc')
             ->paginate(18);
 
         $recent = Post::orderBy('id', 'desc')->take(3)->get();
-        // return $posts;
+        return $posts;
         return view('frontends.post', compact('posts', 'recent'));
     }
     public function search(Request $request)
@@ -190,6 +192,7 @@ class FrontController extends Controller
                 ->view('frontends.download', [
                     'post' => $post,
                     'files' => $files,
+                    'randoms' => $randoms
 
                 ])
                 ->withCookie($cookie); //store the cookie
