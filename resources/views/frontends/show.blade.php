@@ -1,4 +1,5 @@
 @extends('layouts.front')
+@section('meta_desc', $post->content)
 @section('content')
     @include('layouts.inc.searchbar')
 

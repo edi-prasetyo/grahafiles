@@ -53,6 +53,13 @@
 
 @section('scripts')
     <script>
+        let start = new Date(),
+            end = new Date();
+
+        start.setDate(start.getDate() - 7); // set to 'now' minus 7 days.
+        start.setHours(0, 0, 0, 0); // set to midnight.
+    </script>
+    <script>
         const data = {
             labels: @json($data->map(fn($data) => date('d M', strtotime($data->date)))),
             datasets: [{

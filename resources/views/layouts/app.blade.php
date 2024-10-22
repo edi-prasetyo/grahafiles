@@ -9,6 +9,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+
     <title>{{ $option->site_name }}</title>
 
     <!-- Fonts -->

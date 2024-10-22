@@ -100,6 +100,7 @@ class PostController extends Controller
             $i = 1;
             foreach ($request->file('file') as $uploadfile) {
 
+                $uuid_file =  $uuid = Str::uuid()->toString();
 
                 $size = $uploadfile->getSize();
                 $ext = $uploadfile->getClientOriginalExtension();
@@ -112,7 +113,7 @@ class PostController extends Controller
                 $uploadfilePost->name = $original_name;
                 $uploadfilePost->size = $size;
                 $uploadfilePost->ext = $ext;
-                $uploadfilePost->uuid = $uuid;
+                $uploadfilePost->uuid = $uuid_file;
 
                 $uploadfilePost->file = $filename;
                 // $uploadfile->file_url = URL::to('/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9/' . $filename);
@@ -193,7 +194,7 @@ class PostController extends Controller
             $i = 1;
             foreach ($request->file('file') as $uploadfile) {
 
-
+                $uuid_file =  $uuid = Str::uuid()->toString();
                 // $file = $request->file('file');
                 $size = $uploadfile->getSize();
                 $ext = $uploadfile->getClientOriginalExtension();
@@ -206,7 +207,7 @@ class PostController extends Controller
                 $uploadUpdate->name = $original_name;
                 $uploadUpdate->size = $size;
                 $uploadUpdate->ext = $ext;
-                $uploadUpdate->uuid = $uuid;
+                $uploadUpdate->uuid = $uuid_file;
 
                 $uploadUpdate->file = $filename;
                 // $uploadfile->file_url = URL::to('/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9/' . $filename);

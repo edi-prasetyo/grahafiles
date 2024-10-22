@@ -6,6 +6,7 @@ use App\Models\CounterDownload;
 use App\Models\CounterPost;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -33,6 +34,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+
         $data = CounterPost::selectRaw("date_format(created_at, '%Y-%m-%d') as date, count(*) as aggregate")
             ->whereDate('created_at', '>=', now()->subDays(30))
             ->groupBy('date')

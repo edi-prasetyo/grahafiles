@@ -7,6 +7,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $option->site_name }}</title>
+    {{-- Meta Tag Seo --}}
+    <meta name="robots" content="index, follow">
+    <meta name="description" content="@yield('meta_desc')" /> {{-- 155 Karakter --}}
+    <Meta Content="Keyword Website Anda" Name="Keywords" />
+    <meta property="og:title" content="short title of your website/webpage" /> {{-- 35 Karakter --}}
+    <meta property="og:url" content="https://www.example.com/webpage/" />
+    <meta property="og:description" content="description of your website/webpage" /> {{-- 65 Karakter --}}
+    <meta property="og:image" content="//cdn.example.com/uploads/images/webpage_300x200.png" />
+    <meta property="og:type" content="article" />
+    <meta property="og:locale" content="id_ID" />
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
