@@ -1,3 +1,12 @@
+@section('robots', 'noindex, nofollow')
+@section('meta_title', $option->site_name)
+@section('meta_description', $option->site_description)
+@section('og_url', url('/'))
+@section('canonical', url('/'))
+@section('img_url', $option->logo_url)
+@section('short_description', $option->site_tagline)
+
+
 @extends('layouts.front')
 
 @section('content')

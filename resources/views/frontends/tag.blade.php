@@ -1,3 +1,12 @@
+@section('robots', 'index, follow')
+@section('meta_title', $option->site_name)
+@section('meta_description', $option->site_description)
+@section('og_url', url('tag/', $tag->slug))
+@section('canonical', url('/'))
+@section('img_url', $option->logo_url)
+@section('short_description', $option->site_tagline)
+@section('keywords', 'logo, download logo, logo vector, logo cdr, logo ai, logo eps')
+
 @extends('layouts.front')
 
 @section('content')

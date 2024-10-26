@@ -1,5 +1,13 @@
+@section('robots', 'index, follow')
+@section('meta_title', $post->meta_title)
+@section('meta_description', $post->meta_description)
+@section('og_url', url('detail', $post->slug))
+@section('canonical', url('detail', $post->slug))
+@section('img_url', $post->image_url)
+@section('short_description', $post->short_description)
+@section('keywords', $post->keywords)
+
 @extends('layouts.front')
-@section('meta_desc', $post->content)
 @section('content')
     @include('layouts.inc.searchbar')
 
@@ -96,8 +104,8 @@
                                     <i class="bi bi-twitter"></i> <span class="txt-share"> Twitter</span>
                                 </a>
 
-                                <a href="https://wa.me/?text={!! $post->content !!}%20{{ url('file', $post->slug) }}"
-                                    target="_blank" class="btn btn-sm btn-success rounded-3 btnShare">
+                                <a href="https://wa.me/?text={{ url('detail', $post->slug) }}" target="_blank"
+                                    class="btn btn-sm btn-success rounded-3 btnShare">
                                     <i class="bi bi-whatsapp"></i> <span class="txt-share">Whatsapp</span>
                                 </a>
                             </div>

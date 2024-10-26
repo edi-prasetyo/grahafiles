@@ -1,3 +1,12 @@
+@section('robots', 'index, follow')
+@section('meta_title', $post->meta_title)
+@section('meta_description', $post->meta_description)
+@section('og_url', url('download', $files->uuid))
+@section('canonical', url('download', $files->uuid))
+@section('img_url', $post->image_url)
+@section('short_description', $post->short_description)
+@section('keywords', 'logo, download logo, logo vector, logo cdr, logo ai, logo eps')
+
 @extends('layouts.front')
 @section('content')
     @include('layouts.inc.searchbar')

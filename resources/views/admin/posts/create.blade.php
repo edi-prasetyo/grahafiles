@@ -5,8 +5,8 @@
 
     <div class="container">
 
-        <div class="col-md-9 mx-auto">
-            <h2 class="my-5">Add New Post 2</h2>
+        <div class="col-md-10 mx-auto">
+            <h2 class="my-5">Add New Post </h2>
 
             @if ($errors->any())
                 <div class="alert alert-danger">
@@ -24,78 +24,110 @@
                 @csrf
 
                 <div class="row">
+                    <div class="col-md-8">
 
-                    <div class="row">
-                        <div class="col-md-6 ">
-                            <div class="form-group mb-3">
+                        <div class="form-group mb-3">
+                            <input type="text" name="title" class="form-control @error('title') is-invalid @enderror"
+                                placeholder="Title">
+                            @error('title')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
 
-                                <select class="form-select single-select-field @error('category_id') is-invalid @enderror"
-                                    id="category-dropdown" name="category_id">
-                                    <option value="">--Pilih Kategori--</option>
-                                    @foreach ($categories as $key => $category)
-                                        <option value="{{ $category->id }}">
-                                            {{ $category->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('category_id')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                        <div class="form-group my-3">
+                            <textarea class="form-control summernote @error('content') is-invalid @enderror" name="content" placeholder="Content"></textarea>
+                            @error('content')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+
+                        <h3 class="my-2">Seo Meta</h3>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Keywords</label>
+                            <input type="text" name="keywords" class="form-control" placeholder="Keywords">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Meta Title</label>
+                            <input type="text" name="short_title" class="form-control" placeholder="Short Title"
+                                maxlength="35">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Short Desc</label>
+                            <input type="text" name="short_description" class="form-control"
+                                placeholder="Short Description" maxlength="65">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Meta Desc</label>
+                            <textarea name="meta_description" class="form-control" placeholder="Meta Description" maxlength="155"></textarea>
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="col-md-4">
+
+
+
+                        <div class="col-12 mx-auto">
+                            <div id="imagePreview"
+                                class="d-flex flex-column justify-content-center align-items-center py-5 my-auto">
+                                <p class="text-muted">PHOTO</p>
+                                <i class="ti ti-photo-plus fs-1 mx-auto"></i>
                             </div>
-
-                            <div class="form-group mb-3">
-
-                                <input type="text" name="title" class="form-control" placeholder="Judul">
-                            </div>
-
+                            <input id="uploadFile" type="file" name="image"
+                                class="img @error('image') is-invalid @enderror">
+                            @error('image')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                         </div>
 
 
+                        <div class="form-group my-3">
 
-                        <div class="col-md-6">
+                            <select class="form-select single-select-field @error('category_id') is-invalid @enderror"
+                                id="category-dropdown" name="category_id">
+                                <option value="">--Pilih Kategori--</option>
+                                @foreach ($categories as $key => $category)
+                                    <option value="{{ $category->id }}">
+                                        {{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('category_id')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
 
-                            {{-- <input type="file" name="image" class="img"> --}}
+                        <div class="form-group my-3">
+                            <select class="form-select" name="tag[]" id="multiple-select-clear-field"
+                                data-placeholder="Choose anything" multiple>
+                                @foreach ($tags as $tag)
+                                    <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group my-3">
+                            <label>File</label>
+                            <input class="form-control" type="file" id="upload_requiremnt_files" name="file[]" multiple>
+                            <div id="upload_count"></div>
+                            <div id="upload_prev"></div>
+                        </div>
 
-                            <div class="col-12 mx-auto">
-                                <div id="imagePreview"
-                                    class="d-flex flex-column justify-content-center align-items-center py-5 my-auto">
-                                    <p class="text-muted">PHOTO</p>
-                                    <i class="ti ti-photo-plus fs-1 mx-auto"></i>
-                                </div>
-                                <input id="uploadFile" type="file" name="image" class="img">
-                            </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary my-3">Save</button>
                         </div>
 
                     </div>
 
-                    <div class="form-group my-3">
-                        <textarea class="form-control summernote" name="content" placeholder="Content"></textarea>
-                        <div class="col-xs-12">
-                            Minimal teks : <span id="maxContentPost"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group my-3">
-                        <select class="form-select" name="tag[]" id="multiple-select-clear-field"
-                            data-placeholder="Choose anything" multiple>
-                            @foreach ($tags as $tag)
-                                <option value="{{ $tag->id }}">{{ $tag->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group my-3">
-                        <label>File</label>
-                        <input class="form-control" type="file" id="upload_requiremnt_files" name="file[]" multiple>
-                        <div id="upload_count"></div>
-                        <div id="upload_prev"></div>
-                    </div>
-
-                    <div class="col-md-12">
-                        <button type="submit" class="btn btn-primary my-3">Save</button>
-                    </div>
                 </div>
-
 
             </form>
         </div>

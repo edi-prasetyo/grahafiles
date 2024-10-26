@@ -5,8 +5,8 @@
 
     <div class="container">
 
-        <div class="col-md-9 mx-auto">
-            <h2 class="my-5">Add New Post</h2>
+        <div class="col-md-11 mx-auto">
+            <h2 class="my-5">Edit Post</h2>
 
             @if ($errors->any())
                 <div class="alert alert-danger">
@@ -25,92 +25,116 @@
 
                 <div class="row">
 
-                    <div class="row">
-                        <div class="col-md-6 ">
-                            <div class="form-group mb-3">
 
-                                <select class="form-select single-select-field @error('category_id') is-invalid @enderror"
-                                    id="category-dropdown" name="category_id">
-                                    <option value="">--Pilih Kategori--</option>
-                                    @foreach ($categories as $key => $category)
-                                        <option value="{{ $category->id }}"
-                                            {{ $post->category_id == $category->id ? 'selected' : '' }}>
-                                            {{ $category->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('category_id')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
+                    <div class="col-md-7">
 
-                            <div class="form-group mb-3">
 
-                                <input type="text" name="title" class="form-control" value="{{ $post->title }}">
-                            </div>
 
+
+                        <div class="form-group mb-3">
+
+                            <input type="text" name="title" class="form-control" value="{{ $post->title }}">
+                        </div>
+
+                        <div class="form-group my-3">
+                            <textarea class="form-control summernote" name="content" placeholder="Content">{{ $post->content }}</textarea>
+
+                        </div>
+                        <h3 class="my-2">Seo Meta</h3>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Keywords</label>
+                            <input type="text" name="keywords" class="form-control" value="{{ $post->keywords }}">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Meta Title</label>
+                            <input type="text" name="short_title" class="form-control" value="{{ $post->meta_title }}"
+                                maxlength="35">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Short Desc</label>
+                            <input type="text" name="short_description" class="form-control"
+                                value="{{ $post->short_description }}" maxlength="65">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Meta Desc</label>
+                            <textarea name="meta_description" class="form-control" value="{{ $post->meta_description }}" maxlength="155">{{ $post->meta_description }}</textarea>
                         </div>
 
 
 
-                        <div class="col-md-6">
-                            <div class="row">
-                                {{-- <input type="file" name="image" class="img"> --}}
-
-                                <div class="col-6 mx-auto">
-                                    <div id="imagePreview"
-                                        class="d-flex flex-column justify-content-center align-items-center py-5 my-auto">
-                                        <p class="text-muted">GANTI PHOTO</p>
-                                        <i class="ti ti-photo-plus fs-1 mx-auto"></i>
-                                    </div>
-                                    <input id="uploadFile" type="file" name="image" class="img">
-                                </div>
-                                <div class="col-6">
-                                    <img src="{{ $post->image_url }}" class="img-fluid">
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
-                    <div class="form-group my-3">
-                        <textarea class="form-control summernote" name="content" placeholder="Content">{{ $post->content }}</textarea>
-                        <div class="col-xs-12">
-                            Minimal teks : <span id="maxContentPost"></span>
-                        </div>
-                    </div>
 
-                    <select name="tag[]" multiple="multiple" id="multiple-select-clear-field"
-                        class="form-control select_multiple" multiple>
-                        @foreach ($tags as $skey => $tag)
-                            <option value="{{ $tag->id }}"
-                                @if ($post->tag->containsStrict('id', $tag->id)) selected="selected" @endif>
-                                {{ $tag->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    <div class="form-group my-5">
-                        <label>File</label>
-                        <input type="file" name="file[]" class="form-control" multiple>
-                        <div class="row mt-5">
-                            @foreach ($files as $file)
-                                <div class="col-md-3">
-                                    <div class="card position-relative mb-3">
-                                        <div class="card-body">
-                                            <a href="{{ url('posts/delete/file/' . $file->id) }}"
-                                                class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-2"><span
-                                                    class=""><i class="bi bi-trash3-fill"></i></span></a>
-                                            {{ $file->name }}
+
+                    <div class="col-md-4">
+                        <div class="row">
+                            {{-- <input type="file" name="image" class="img"> --}}
+
+                            <div class="col-6">
+                                <div id="imagePreview"
+                                    class="d-flex flex-column justify-content-center align-items-center py-5 my-auto">
+                                    <p class="text-muted">GANTI PHOTO</p>
+                                    <i class="ti ti-photo-plus fs-1 mx-auto"></i>
+                                </div>
+                                <input id="uploadFile" type="file" name="image" class="img">
+                            </div>
+                            <div class="col-6">
+                                <img src="{{ $post->image_url }}" class="img-fluid">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group my-3">
+                            <select class="form-select single-select-field @error('category_id') is-invalid @enderror"
+                                id="category-dropdown" name="category_id">
+                                <option value="">--Pilih Kategori--</option>
+                                @foreach ($categories as $key => $category)
+                                    <option value="{{ $category->id }}"
+                                        {{ $post->category_id == $category->id ? 'selected' : '' }}>
+                                        {{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('category_id')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+
+                        <select name="tag[]" multiple="multiple" id="multiple-select-clear-field"
+                            class="form-control select_multiple" multiple>
+                            @foreach ($tags as $skey => $tag)
+                                <option value="{{ $tag->id }}"
+                                    @if ($post->tag->containsStrict('id', $tag->id)) selected="selected" @endif>
+                                    {{ $tag->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <div class="form-group my-3">
+                            <label>File</label>
+                            <input type="file" name="file[]" class="form-control" multiple>
+                            <div class="row mt-5">
+                                @foreach ($files as $file)
+                                    <div class="col-md-6">
+                                        <div class="card position-relative mb-3">
+                                            <div class="card-body">
+                                                <a href="{{ url('posts/delete/file/' . $file->id) }}"
+                                                    class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-2"><span
+                                                        class=""><i class="bi bi-trash3-fill"></i></span></a>
+                                                {{ $file->name }}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            @endforeach
+                                @endforeach
+                            </div>
                         </div>
+
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-primary my-3">Update</button>
+                        </div>
+
                     </div>
 
-                    <div class="col-md-12">
-                        <button type="submit" class="btn btn-primary my-3">Save</button>
-                    </div>
                 </div>
 
 

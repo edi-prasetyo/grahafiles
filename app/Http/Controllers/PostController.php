@@ -73,6 +73,10 @@ class PostController extends Controller
         $post->category_id = $validated['category_id'];
         $post->title = $validated['title'];
         $post->content = $validated['content'];
+        $post->meta_description = $request['meta_description'];
+        $post->meta_title = $request['short_title'];
+        $post->short_description = $request['short_description'];
+        $post->keywords = $request['keywords'];
 
         $post->user_id = $user_id;
         $post->status = 1;
@@ -164,6 +168,12 @@ class PostController extends Controller
         $post->category_id = $validated['category_id'];
         $post->title = $validated['title'];
         $post->content = $validated['content'];
+
+        $post->meta_description = $request['meta_description'];
+        $post->meta_title = $request['short_title'];
+        $post->short_description = $request['meta_description'];
+        $post->keywords = $request['keywords'];
+
 
         $post->user_id = $user_id;
         $post->status = 1;

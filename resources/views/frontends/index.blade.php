@@ -1,4 +1,14 @@
-@extends('layouts.front')
+@section('robots', 'index, follow')
+@section('meta_title', $option->site_name)
+@section('meta_description', $option->site_description)
+@section('og_url', url('/'))
+@section('canonical', url('/'))
+@section('img_url', $option->logo_url)
+@section('short_description', $option->site_tagline)
+@section('keywords', 'free download logo, download logo vector, unduh logo vector, logo format cdr, logo format ai, logo
+    format eps')
+
+    @extends('layouts.front')
 @section('content')
     <section class="hero bg-dark-subtle py-5">
         <div class="container">
